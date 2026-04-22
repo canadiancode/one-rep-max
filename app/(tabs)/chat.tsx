@@ -3,11 +3,11 @@ import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 
-export default function MyBeastScreen() {
+export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">My Beast</ThemedText>
-      <ThemedText style={styles.body}>This is the homepage.</ThemedText>
+      <ThemedText type="title">Chat</ThemedText>
+      <ThemedText style={styles.body}>This is the community.</ThemedText>
     </ThemedView>
   );
 }
