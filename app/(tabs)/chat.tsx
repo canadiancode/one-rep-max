@@ -7,7 +7,9 @@ export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Chat</ThemedText>
-      <ThemedText style={styles.body}>This is the community.</ThemedText>
+      <ThemedText style={styles.body}>
+        This is the community chat and announcements.
+      </ThemedText>
     </ThemedView>
   );
 }

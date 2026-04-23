@@ -6,8 +6,10 @@ import { ThemedView } from "@/components/themed-view";
 export default function ActionsScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">actions</ThemedText>
-      <ThemedText style={styles.body}>This is the actions page.</ThemedText>
+      <ThemedText type="title">Actions</ThemedText>
+      <ThemedText style={styles.body}>
+        This is the actions page. Users will be able to perform actions here.
+      </ThemedText>
     </ThemedView>
   );
 }

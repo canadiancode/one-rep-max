@@ -6,6 +6,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import 'react-native-reanimated';
 
 import { FONT_FAMILY } from '@/constants/fonts';
@@ -23,6 +24,10 @@ const navigationFonts = {
 export const unstable_settings = {
   anchor: '(tabs)',
 };
+
+/** Frame around the root stack + status bar (RN: `backgroundColor` + `padding`). */
+const APP_SHELL_BACKGROUND = '#03418c';
+const APP_SHELL_PADDING = 4;
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -47,11 +52,22 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={navigationTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          padding: APP_SHELL_PADDING,
+          backgroundColor: APP_SHELL_BACKGROUND,
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+          </Stack>
+        </View>
+        <StatusBar style="auto" />
+      </View>
     </ThemeProvider>
   );
 }

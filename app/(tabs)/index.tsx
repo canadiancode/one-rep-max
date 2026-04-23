@@ -7,7 +7,10 @@ export default function MyBeastScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">My Beast</ThemedText>
-      <ThemedText style={styles.body}>This is the homepage.</ThemedText>
+      <ThemedText style={styles.body}>
+        This is the homepage. This will display quick status about a users
+        beast.
+      </ThemedText>
     </ThemedView>
   );
 }

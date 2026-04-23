@@ -7,7 +7,9 @@ export default function MapScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Map</ThemedText>
-      <ThemedText style={styles.body}>This is the map.</ThemedText>
+      <ThemedText style={styles.body}>
+        This will display nearby gyms, and once a gym is opened, a live chat.
+      </ThemedText>
     </ThemedView>
   );
 }

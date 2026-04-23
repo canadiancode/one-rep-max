@@ -7,7 +7,10 @@ export default function SettingsScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title">Settings</ThemedText>
-      <ThemedText style={styles.body}>This is the settings.</ThemedText>
+      <ThemedText style={styles.body}>
+        This is the settings. Users will be able to customize their profile
+        here.
+      </ThemedText>
     </ThemedView>
   );
 }
