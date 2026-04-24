@@ -29,7 +29,7 @@ export const unstable_settings = {
   anchor: "(tabs)",
 };
 
-/** Frame around the root stack + status bar (RN: `backgroundColor` + `padding`). */
+/** Frame around the root stack + status bar (RN: `backgroundColor` + edge padding; bottom flush). */
 const APP_SHELL_BACKGROUND = "#03418c";
 const APP_SHELL_PADDING = 4;
 
@@ -60,7 +60,9 @@ export default function RootLayout() {
         style={{
           flex: 1,
           flexDirection: "column",
-          padding: APP_SHELL_PADDING,
+          paddingTop: 0,
+          paddingHorizontal: APP_SHELL_PADDING,
+          paddingBottom: 0,
           backgroundColor: APP_SHELL_BACKGROUND,
         }}
       >

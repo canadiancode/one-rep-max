@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import React from "react";
-import { View, type ViewStyle } from "react-native";
+import { Platform, View, type ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { HapticTab } from "@/components/haptic-tab";
@@ -31,6 +31,8 @@ const TAB_BAR_SURFACE = "#02284f";
 const TAB_NAVIGATOR_ROOT_BACKGROUND = "#04418c";
 
 const TAB_BAR_EDGE_PADDING = 1;
+/** On iOS/Android, subtract from `insets.bottom` for tab bar only (web unchanged). */
+const TAB_BAR_BOTTOM_INSET_REDUCTION_NATIVE = 20;
 /** Default tab row body height from UIKit tab bar (~49pt); we grow beyond this. */
 const UIKIT_TAB_BAR_BODY = 60;
 const TAB_BAR_EXTRA_HEIGHT = 18;
@@ -66,6 +68,10 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const horizontalInset = Math.max(insets.left, insets.right);
+  const tabBarBottomInset =
+    Platform.OS === "web"
+      ? insets.bottom
+      : Math.max(0, insets.bottom - TAB_BAR_BOTTOM_INSET_REDUCTION_NATIVE);
 
   return (
     <Tabs
@@ -95,10 +101,10 @@ export default function TabLayout() {
             UIKIT_TAB_BAR_BODY +
             TAB_BAR_EXTRA_HEIGHT +
             TAB_BAR_EDGE_PADDING * 2 +
-            insets.bottom,
+            tabBarBottomInset,
           paddingTop: TAB_BAR_EDGE_PADDING,
           paddingHorizontal: TAB_BAR_EDGE_PADDING + horizontalInset,
-          paddingBottom: TAB_BAR_EDGE_PADDING + insets.bottom,
+          paddingBottom: TAB_BAR_EDGE_PADDING + tabBarBottomInset,
         },
       }}
     >
