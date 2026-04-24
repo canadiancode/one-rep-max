@@ -13,6 +13,11 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import "react-native-reanimated";
 
+import {
+  APP_SHELL_PADDING,
+  APP_SHELL_PRIMARY_BACKGROUND,
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-shell";
 import { FONT_FAMILY } from "@/constants/fonts";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -28,10 +33,6 @@ const navigationFonts = {
 export const unstable_settings = {
   anchor: "(tabs)",
 };
-
-/** Frame around the root stack + status bar (RN: `backgroundColor` + edge padding; bottom flush). */
-const APP_SHELL_BACKGROUND = "#03418c";
-const APP_SHELL_PADDING = 4;
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -63,10 +64,15 @@ export default function RootLayout() {
           paddingTop: 0,
           paddingHorizontal: APP_SHELL_PADDING,
           paddingBottom: 0,
-          backgroundColor: APP_SHELL_BACKGROUND,
+          backgroundColor: APP_SHELL_PRIMARY_BACKGROUND,
         }}
       >
-        <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
+          }}
+        >
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen

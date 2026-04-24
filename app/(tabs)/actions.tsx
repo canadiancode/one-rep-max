@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { APP_SHELL_PRIMARY_BACKGROUND } from "@/constants/app-shell";
 
 export default function ActionsScreen() {
   return (
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     padding: 24,
     gap: 12,
     borderBottomWidth: 5,
-    borderBottomColor: "#04418c",
+    borderBottomColor: APP_SHELL_PRIMARY_BACKGROUND,
   },
   body: {
     textAlign: "center",

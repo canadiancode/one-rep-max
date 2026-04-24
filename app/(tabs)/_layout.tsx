@@ -5,6 +5,10 @@ import { Platform, View, type ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { HapticTab } from "@/components/haptic-tab";
+import {
+  APP_SHELL_PRIMARY_BACKGROUND,
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-shell";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -23,12 +27,6 @@ function tabBarImageIcon(source: number, focused: boolean) {
     />
   );
 }
-
-// will add more options for backgrounds later
-const TAB_BAR_SURFACE = "#02284f";
-
-/** Web: nearest host above `FrameSizeProvider` (hidden resize observer + tab column). RN: same logical shell. */
-const TAB_NAVIGATOR_ROOT_BACKGROUND = "#04418c";
 
 const TAB_BAR_EDGE_PADDING = 1;
 /** On iOS/Android, subtract from `insets.bottom` for tab bar only (web unchanged). */
@@ -79,7 +77,7 @@ export default function TabLayout() {
         <View
           style={{
             flex: 1,
-            backgroundColor: TAB_NAVIGATOR_ROOT_BACKGROUND,
+            backgroundColor: APP_SHELL_PRIMARY_BACKGROUND,
           }}
         >
           {children}
@@ -94,7 +92,7 @@ export default function TabLayout() {
         // Styles the wrapper that parents the `role="tablist"` row in BottomTabBar.
         // Explicit `height` is required for a taller bar; `getTabBarHeight` reads it from here.
         tabBarStyle: {
-          backgroundColor: TAB_BAR_SURFACE,
+          backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
           borderRadius: 15,
           overflow: "hidden",
           height:
