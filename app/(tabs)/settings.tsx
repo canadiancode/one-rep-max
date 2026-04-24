@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
     gap: 12,
+    borderBottomWidth: 5,
+    borderBottomColor: "#04418c",
   },
   body: {
     textAlign: "center",

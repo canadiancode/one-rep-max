@@ -1,26 +1,36 @@
 import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import { PlatformPressable } from "@react-navigation/elements";
 import * as Haptics from "expo-haptics";
-import { ImageBackground, Platform, StyleSheet } from "react-native";
+import { Image } from "expo-image";
+import { useCallback, useState } from "react";
+import type { ImageStyle } from "react-native";
+import { LayoutChangeEvent, Platform, StyleSheet, View } from "react-native";
 
-/** Pixel tab tile; 9-slice via `capInsets` (image coords) so corners stay crisp when tabs flex. */
+/** Pixel tab tile (fills each tab cell; `contentFit="fill"` avoids RN `capInsets` left-bias on web). */
 const TAB_TILE_BG = require("@/assets/backgrounds/blue-square.png");
-
-/**
- * Non-stretching bezel in the PNG (see `assets/backgrounds/blue-square.png`).
- * Increase if corners stretch; decrease if the flat center looks pinched.
- */
-const TAB_TILE_CAP = 10;
 
 export function HapticTab(props: BottomTabBarButtonProps) {
   const { style, children, ...rest } = props;
 
-  const capInsets = {
-    top: TAB_TILE_CAP,
-    left: TAB_TILE_CAP,
-    bottom: TAB_TILE_CAP,
-    right: TAB_TILE_CAP,
-  };
+  const [tilePx, setTilePx] = useState<{ w: number; h: number } | null>(null);
+
+  const onTileLayout = useCallback((e: LayoutChangeEvent) => {
+    const { width, height } = e.nativeEvent.layout;
+    if (width > 0 && height > 0) {
+      setTilePx((prev) =>
+        prev && prev.w === width && prev.h === height
+          ? prev
+          : { w: width, h: height },
+      );
+    }
+  }, []);
+
+  const tileImageStyle: ImageStyle[] = [
+    styles.tileImageBase,
+    tilePx != null
+      ? { width: tilePx.w, height: tilePx.h }
+      : StyleSheet.absoluteFillObject,
+  ];
 
   return (
     <PlatformPressable
@@ -33,23 +43,39 @@ export function HapticTab(props: BottomTabBarButtonProps) {
         props.onPressIn?.(ev);
       }}
     >
-      <ImageBackground
-        accessible={false}
-        source={TAB_TILE_BG}
-        // RN copies flattened width/height onto the inner Image; `absoluteFill` alone
-        // leaves them undefined so the bitmap keeps its intrinsic size (top-left only).
-        style={[StyleSheet.absoluteFillObject, styles.tileShell]}
-        imageStyle={styles.tileImage}
-        resizeMode="stretch"
-        capInsets={capInsets}
-      />
-      {children}
+      {/*
+        BottomTabItem merges `styles.tab` → `alignItems: 'center'`, which shrinks a single
+        inner wrapper to content width. Override with `alignItems: 'stretch'` on the pressable.
+        Web: `<a>` needs an explicit width in the flex row so the tile matches the tab slice.
+      */}
+      <View
+        style={styles.tabShell}
+        pointerEvents="box-none"
+        onLayout={onTileLayout}
+      >
+        <Image
+          accessibilityElementsHidden
+          accessible={false}
+          source={TAB_TILE_BG}
+          style={tileImageStyle}
+          contentFit="fill"
+        />
+        {children}
+      </View>
     </PlatformPressable>
   );
 }
 
 const styles = StyleSheet.create({
   pressable: {
+    flex: 1,
+    flexBasis: 0,
+    alignSelf: "stretch",
+    minWidth: 0,
+    /** Overrides `styles.tab` from BottomTabItem. */
+    alignItems: "stretch",
+    /** Overrides `tabVerticalUiKit` / `tabHorizontalUiKit` `padding: 5` (web `<a role="tab">`). */
+    padding: 1,
     overflow: "hidden",
     borderRadius: 0,
     backgroundColor: "transparent",
@@ -57,15 +83,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
     position: "relative",
     ...(Platform.OS === "web"
-      ? { boxShadow: "none" as const }
-      : ({} as Record<string, never>)),
+      ? ({
+          width: "100%",
+          maxWidth: "100%",
+          boxShadow: "none",
+        } as const)
+      : {}),
   },
-  tileShell: {
+  tabShell: {
+    flex: 1,
     width: "100%",
-    height: "100%",
+    alignSelf: "stretch",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
   },
-  tileImage: {
-    width: "100%",
-    height: "100%",
+  tileImageBase: {
+    position: "absolute",
+    left: 0,
+    top: 0,
   },
 });
