@@ -22,6 +22,7 @@ import { FONT_FAMILY } from "@/constants/fonts";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 SplashScreen.preventAutoHideAsync();
+const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
 const navigationFonts = {
   regular: { fontFamily: FONT_FAMILY, fontWeight: "400" as const },
@@ -38,6 +39,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [fontsLoaded] = useFonts({
     [FONT_FAMILY]: require("@/assets/fonts/PressStart2P-Regular.ttf"),
+    [CELL_HEADING_FONT_FAMILY]: require("@/assets/fonts/PixeloidSans-lxa3y.ttf"),
   });
 
   useEffect(() => {
