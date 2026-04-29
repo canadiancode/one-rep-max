@@ -1,10 +1,10 @@
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
+2;
 
 import {
-  FLOATING_SURFACE_GUTTER,
   FLOATING_SURFACE_RADIUS,
-  FloatingShellSurface,
+  FloatingShellSurface
 } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -15,7 +15,7 @@ import {
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
-const METRIC_ICON_CORNER_INSET = FLOATING_SURFACE_GUTTER + 2;
+const METRIC_ICON_CORNER_INSET = 14;
 const METRIC_ICON_CORNER_SIZE = 32;
 
 export default function MyBeastScreen() {
@@ -352,6 +352,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
+    position: "relative",
+    zIndex: 3,
   },
   metricTileTitle: {
     fontFamily: CELL_HEADING_FONT_FAMILY,
