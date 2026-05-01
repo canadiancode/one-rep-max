@@ -52,10 +52,17 @@ export default function RootLayout() {
     return null;
   }
 
-  const navigationTheme =
-    colorScheme === "dark"
-      ? { ...DarkTheme, fonts: navigationFonts }
-      : { ...DefaultTheme, fonts: navigationFonts };
+  const baseTheme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+  const navigationTheme = {
+    ...baseTheme,
+    fonts: navigationFonts,
+    colors: {
+      ...baseTheme.colors,
+      /** Avoid default dark scene fill (near-black); shell Views already paint the frame. */
+      background: APP_SHELL_PRIMARY_BACKGROUND,
+      card: APP_SHELL_SECONDARY_BACKGROUND,
+    },
+  };
 
   return (
     <ThemeProvider value={navigationTheme}>

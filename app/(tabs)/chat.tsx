@@ -2,7 +2,10 @@ import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { APP_SHELL_PRIMARY_BACKGROUND } from "@/constants/app-shell";
+import {
+  APP_SHELL_PRIMARY_BACKGROUND,
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+} from "@/constants/app-shell";
 
 export default function ChatScreen() {
   return (
@@ -22,8 +25,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
     gap: 12,
-    borderBottomWidth: 5,
+    borderBottomWidth: 0,
     borderBottomColor: APP_SHELL_PRIMARY_BACKGROUND,
+    ...TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
   },
   body: {
     textAlign: "center",

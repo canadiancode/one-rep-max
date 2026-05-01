@@ -1,20 +1,25 @@
 import { StyleSheet } from "react-native";
-import MapView from "react-native-maps";
 
+import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import {
+  APP_SHELL_PRIMARY_BACKGROUND,
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+} from "@/constants/app-shell";
 
-/** Default camera (Vancouver, BC) until user location drives the region. */
-const INITIAL_REGION = {
-  latitude: 49.2827,
-  longitude: -123.1207,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-};
-
+/**
+ * Default / web route. Native map UI is in `map.native.tsx`. On web, Metro aliases
+ * `react-native-maps` to `shims/react-native-maps.web.tsx` so `require.context` can
+ * include `.native` routes without bundling native codegen.
+ */
 export default function MapScreen() {
   return (
     <ThemedView style={styles.container}>
-      <MapView style={styles.map} initialRegion={INITIAL_REGION} />
+      <ThemedText type="title">Map</ThemedText>
+      <ThemedText style={styles.body}>
+        The gym map runs in the iOS and Android app. Open this project in Expo
+        Go on your phone to use the map tab.
+      </ThemedText>
     </ThemedView>
   );
 }
@@ -22,8 +27,15 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+    gap: 12,
+    borderBottomWidth: 0,
+    borderBottomColor: APP_SHELL_PRIMARY_BACKGROUND,
+    ...TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
   },
-  map: {
-    flex: 1,
+  body: {
+    textAlign: "center",
   },
 });

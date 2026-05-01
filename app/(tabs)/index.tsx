@@ -1,15 +1,13 @@
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
 
-import {
-  FLOATING_SURFACE_RADIUS,
-  FloatingShellSurface,
-} from "@/components/floating-shell-surface";
+import { FloatingShellSurface } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
 } from "@/constants/app-shell";
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
@@ -19,7 +17,11 @@ const METRIC_ICON_CORNER_SIZE = 32;
 
 export default function MyBeastScreen() {
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView
+      lightColor={APP_SHELL_SECONDARY_BACKGROUND}
+      darkColor={APP_SHELL_SECONDARY_BACKGROUND}
+      style={styles.container}
+    >
       <View style={[styles.row, styles.rowFull, styles.rowDouble]}>
         <View style={styles.heroShell}>
           <Image
@@ -285,10 +287,7 @@ export default function MyBeastScreen() {
         </View>
       </View>
       <View style={[styles.row, styles.rowFull]}>
-        <FloatingShellSurface
-          gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-          style={[styles.cellFull, styles.bottomRowFloatingOuter]}
-        />
+        <FloatingShellSurface gutterColor={APP_SHELL_SECONDARY_BACKGROUND} />
       </View>
     </ThemedView>
   );
@@ -297,9 +296,7 @@ export default function MyBeastScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: APP_SHELL_PRIMARY_BACKGROUND,
-    borderBottomWidth: 5,
-    borderBottomColor: APP_SHELL_PRIMARY_BACKGROUND,
+    ...TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
   },
   row: {
     flex: 1,
@@ -329,11 +326,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     minHeight: 0,
-  },
-  /** Gutter wrapper for the lowest grid row only — matches tab bar corner radius. */
-  bottomRowFloatingOuter: {
-    borderBottomLeftRadius: FLOATING_SURFACE_RADIUS,
-    borderBottomRightRadius: FLOATING_SURFACE_RADIUS,
   },
   metricTileWrapper: {
     flex: 1,
