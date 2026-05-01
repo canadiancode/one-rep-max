@@ -1,10 +1,9 @@
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
-2;
 
 import {
   FLOATING_SURFACE_RADIUS,
-  FloatingShellSurface
+  FloatingShellSurface,
 } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
