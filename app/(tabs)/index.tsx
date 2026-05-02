@@ -5,9 +5,8 @@ import { FloatingShellSurface } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
-  APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR
 } from "@/constants/app-shell";
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
