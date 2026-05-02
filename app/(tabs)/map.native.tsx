@@ -1,9 +1,8 @@
 import { Image } from "expo-image";
 import * as Location from "expo-location";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { ImageSourcePropType } from "react-native";
 import {
-  Platform,
+  type ImageSourcePropType,
   Pressable,
   StyleSheet,
   useWindowDimensions,
@@ -896,18 +895,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     zIndex: 21,
-    ...Platform.select({
-      android: {
-        elevation: 24,
-      },
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.35,
-        shadowRadius: 4,
-      },
-      default: {},
-    }),
+    elevation: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.35,
+    shadowRadius: 4,
   },
   locateFabPressed: {
     opacity: 0.85,
