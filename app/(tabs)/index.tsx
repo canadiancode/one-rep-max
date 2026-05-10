@@ -15,6 +15,32 @@ const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 const METRIC_ICON_CORNER_INSET = 14;
 const METRIC_ICON_CORNER_SIZE = 32;
 
+const XP_BAR_DISPLAY_MIN = 5;
+const XP_BAR_DISPLAY_MAX = 98;
+function clampXpBarPercent(raw: number): number {
+  if (raw >= XP_BAR_DISPLAY_MAX) return XP_BAR_DISPLAY_MAX - 1;
+  return Math.max(XP_BAR_DISPLAY_MIN, raw);
+}
+
+/** XP required to advance one level. Each level is a 100-point band. */
+const XP_PER_LEVEL = 100;
+
+/** Total lifetime XP. Replace with real source later. */
+const CURRENT_XP = 1850;
+
+/** Progress within the current level (0–100). e.g. 1850 → 50% of the way to next level. */
+const XP_BAR_FILL_PERCENT_RAW =
+  ((CURRENT_XP % XP_PER_LEVEL) / XP_PER_LEVEL) * 100;
+
+const XP_BAR_FILL_PERCENT = clampXpBarPercent(XP_BAR_FILL_PERCENT_RAW);
+/** Visual width of the rounded right-cap (px). Picked to match bar height. */
+const XP_BAR_RIGHT_END_WIDTH = 14;
+/**
+ * How far LEFT the cap is shifted from the cut position. Lets the cap straddle
+ * the hard right edge of the clipped fill so the seam reads as a rounded end.
+ */
+const XP_BAR_RIGHT_END_OFFSET = 8;
+
 export default function MyBeastScreen() {
   const { metrics } = useDashboardHealthMetrics();
 
@@ -293,13 +319,21 @@ export default function MyBeastScreen() {
           <FloatingShellSurface gutterColor={APP_SHELL_SECONDARY_BACKGROUND} />
           <View style={styles.xpTileOverlay} pointerEvents="none">
             <View style={styles.xpHeaderRow}>
-              <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
-                style={styles.xpHeaderText}
-              >
-                Level 12
-              </ThemedText>
+              <View style={styles.xpHeaderLeft}>
+                <Image
+                  accessibilityIgnoresInvertColors
+                  source={require("@/assets/icons/star.png")}
+                  style={styles.xpHeaderStar}
+                  contentFit="contain"
+                />
+                <ThemedText
+                  lightColor="#FFFFFF"
+                  darkColor="#FFFFFF"
+                  style={styles.xpHeaderText}
+                >
+                  Level 18
+                </ThemedText>
+              </View>
               <ThemedText
                 lightColor="#FFFFFF"
                 darkColor="#FFFFFF"
@@ -309,17 +343,42 @@ export default function MyBeastScreen() {
               </ThemedText>
             </View>
             <View style={styles.xpBarRow}>
-              <Image
-                accessibilityIgnoresInvertColors
-                source={require("@/assets/bars/xp-level-large.png")}
-                style={styles.xpBarFillImage}
-                contentFit="contain"
-              />
+              <View
+                style={[
+                  styles.xpBarFillClip,
+                  { width: `${XP_BAR_FILL_PERCENT}%` },
+                ]}
+              >
+                <Image
+                  accessibilityIgnoresInvertColors
+                  source={require("@/assets/bars/xp-level-large.png")}
+                  style={[
+                    styles.xpBarFillImage,
+                    XP_BAR_FILL_PERCENT > 0
+                      ? { width: `${10000 / XP_BAR_FILL_PERCENT}%` }
+                      : { width: "100%" },
+                  ]}
+                  contentFit="fill"
+                />
+              </View>
+              <View
+                style={[
+                  styles.xpBarFillRightEndWrap,
+                  { left: `${XP_BAR_FILL_PERCENT}%` },
+                ]}
+              >
+                <Image
+                  accessibilityIgnoresInvertColors
+                  source={require("@/assets/bars/xp-level-right-end.png")}
+                  style={styles.xpBarFillRightEndImage}
+                  contentFit="fill"
+                />
+              </View>
               <Image
                 accessibilityIgnoresInvertColors
                 source={require("@/assets/bars/xp-level-container-large.png")}
                 style={styles.xpBarContainerImage}
-                contentFit="contain"
+                contentFit="fill"
               />
             </View>
             <View style={styles.xpFooterRow}>
@@ -328,7 +387,7 @@ export default function MyBeastScreen() {
                 darkColor="#FFFFFF"
                 style={styles.xpFooterText}
               >
-                650XP to level 13
+                50XP to level 19
               </ThemedText>
             </View>
           </View>
@@ -446,6 +505,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  xpHeaderLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  xpHeaderStar: {
+    width: 25,
+    height: 25,
+    marginRight: 8,
+  },
   xpHeaderText: {
     fontFamily: CELL_HEADING_FONT_FAMILY,
     fontSize: 18,
@@ -458,9 +526,31 @@ const styles = StyleSheet.create({
     height: 28,
     position: "relative",
   },
-  xpBarFillImage: {
-    ...StyleSheet.absoluteFillObject,
+  xpBarFillClip: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    overflow: "hidden",
     zIndex: 1,
+  },
+  xpBarFillImage: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+  },
+  xpBarFillRightEndWrap: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: XP_BAR_RIGHT_END_WIDTH,
+    marginLeft: -XP_BAR_RIGHT_END_OFFSET,
+    zIndex: 1,
+  },
+  xpBarFillRightEndImage: {
+    width: "100%",
+    height: "100%",
   },
   xpBarContainerImage: {
     ...StyleSheet.absoluteFillObject,
