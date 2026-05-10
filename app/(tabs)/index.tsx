@@ -42,7 +42,7 @@ const XP_BAR_RIGHT_END_WIDTH = 14;
 const XP_BAR_RIGHT_END_OFFSET = 8;
 
 export default function MyBeastScreen() {
-  const { metrics } = useDashboardHealthMetrics();
+  const { metrics, connectivity } = useDashboardHealthMetrics();
 
   return (
     <ThemedView
@@ -95,7 +95,11 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/heart.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.restingHeartRateBpm &&
+                  styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -134,7 +138,10 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/scale.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.weightLbs && styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -175,7 +182,10 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/lightning.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.steps && styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -214,7 +224,11 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/fire.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.activeEnergyKcal &&
+                  styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -269,7 +283,10 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/moon.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.sleep && styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -308,7 +325,10 @@ export default function MyBeastScreen() {
             </View>
             <Image
               source={require("@/assets/icons/water-drop.png")}
-              style={styles.metricIconCorner}
+              style={[
+                styles.metricIconCorner,
+                !connectivity.waterOz && styles.metricIconCornerInactive,
+              ]}
               contentFit="contain"
             />
           </View>
@@ -487,6 +507,14 @@ const styles = StyleSheet.create({
     width: METRIC_ICON_CORNER_SIZE,
     height: METRIC_ICON_CORNER_SIZE,
     zIndex: 2,
+  },
+  /**
+   * "Inactive" treatment when the corresponding HealthKit metric hasn't connected.
+   * Reads as low-contrast / desaturated, equivalent intent to `filter: contrast(0.5)`,
+   * but uses opacity for portable behavior across RN versions and platforms.
+   */
+  metricIconCornerInactive: {
+    opacity: 0.4,
   },
   xpTileWrapper: {
     flex: 1,

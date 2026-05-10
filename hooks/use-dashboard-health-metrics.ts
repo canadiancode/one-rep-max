@@ -33,6 +33,25 @@ export type DashboardHealthMetrics = {
   waterOz: number;
 };
 
+/** True when the metric was sourced from HealthKit; false when it's a fallback. */
+export type DashboardHealthConnectivity = {
+  restingHeartRateBpm: boolean;
+  weightLbs: boolean;
+  steps: boolean;
+  activeEnergyKcal: boolean;
+  sleep: boolean;
+  waterOz: boolean;
+};
+
+const NO_CONNECTIVITY: DashboardHealthConnectivity = {
+  restingHeartRateBpm: false,
+  weightLbs: false,
+  steps: false,
+  activeEnergyKcal: false,
+  sleep: false,
+  waterOz: false,
+};
+
 const DASHBOARD_READ_TYPES = [
   "HKQuantityTypeIdentifierRestingHeartRate",
   "HKQuantityTypeIdentifierBodyMass",
@@ -157,7 +176,10 @@ async function fetchSleepHoursMinutes(): Promise<{
   return { hours, minutes };
 }
 
-async function loadDashboardMetrics(): Promise<DashboardHealthMetrics> {
+async function loadDashboardMetrics(): Promise<{
+  metrics: DashboardHealthMetrics;
+  connectivity: DashboardHealthConnectivity;
+}> {
   const [
     restingHeartRateBpm,
     weightLbs,
@@ -175,25 +197,38 @@ async function loadDashboardMetrics(): Promise<DashboardHealthMetrics> {
   ]);
 
   return {
-    restingHeartRateBpm:
-      restingHeartRateBpm ?? DASHBOARD_HEALTH_FALLBACKS.restingHeartRateBpm,
-    weightLbs: weightLbs ?? DASHBOARD_HEALTH_FALLBACKS.weightLbs,
-    steps: steps ?? DASHBOARD_HEALTH_FALLBACKS.steps,
-    activeEnergyKcal:
-      activeEnergyKcal ?? DASHBOARD_HEALTH_FALLBACKS.activeEnergyKcal,
-    sleepHours: sleep?.hours ?? DASHBOARD_HEALTH_FALLBACKS.sleepHours,
-    sleepMinutes: sleep?.minutes ?? DASHBOARD_HEALTH_FALLBACKS.sleepMinutes,
-    waterOz: waterOz ?? DASHBOARD_HEALTH_FALLBACKS.waterOz,
+    metrics: {
+      restingHeartRateBpm:
+        restingHeartRateBpm ?? DASHBOARD_HEALTH_FALLBACKS.restingHeartRateBpm,
+      weightLbs: weightLbs ?? DASHBOARD_HEALTH_FALLBACKS.weightLbs,
+      steps: steps ?? DASHBOARD_HEALTH_FALLBACKS.steps,
+      activeEnergyKcal:
+        activeEnergyKcal ?? DASHBOARD_HEALTH_FALLBACKS.activeEnergyKcal,
+      sleepHours: sleep?.hours ?? DASHBOARD_HEALTH_FALLBACKS.sleepHours,
+      sleepMinutes: sleep?.minutes ?? DASHBOARD_HEALTH_FALLBACKS.sleepMinutes,
+      waterOz: waterOz ?? DASHBOARD_HEALTH_FALLBACKS.waterOz,
+    },
+    connectivity: {
+      restingHeartRateBpm: restingHeartRateBpm != null,
+      weightLbs: weightLbs != null,
+      steps: steps != null,
+      activeEnergyKcal: activeEnergyKcal != null,
+      sleep: sleep != null,
+      waterOz: waterOz != null,
+    },
   };
 }
 
 export function useDashboardHealthMetrics(): {
   metrics: DashboardHealthMetrics;
+  connectivity: DashboardHealthConnectivity;
   isLoading: boolean;
 } {
   const [metrics, setMetrics] = useState<DashboardHealthMetrics>(
     DASHBOARD_HEALTH_FALLBACKS,
   );
+  const [connectivity, setConnectivity] =
+    useState<DashboardHealthConnectivity>(NO_CONNECTIVITY);
   const [isLoading, setIsLoading] = useState(Platform.OS === "ios");
 
   const [authStatus, requestAuthorization] = useHealthkitAuthorization({
@@ -216,6 +251,7 @@ export function useDashboardHealthMetrics(): {
   const refresh = useCallback(async () => {
     if (Platform.OS !== "ios") {
       setMetrics(DASHBOARD_HEALTH_FALLBACKS);
+      setConnectivity(NO_CONNECTIVITY);
       setIsLoading(false);
       return;
     }
@@ -223,6 +259,7 @@ export function useDashboardHealthMetrics(): {
     const available = await isHealthDataAvailableAsync().catch(() => false);
     if (!available) {
       setMetrics(DASHBOARD_HEALTH_FALLBACKS);
+      setConnectivity(NO_CONNECTIVITY);
       setIsLoading(false);
       return;
     }
@@ -237,9 +274,11 @@ export function useDashboardHealthMetrics(): {
     setIsLoading(true);
     try {
       const next = await loadDashboardMetrics();
-      setMetrics(next);
+      setMetrics(next.metrics);
+      setConnectivity(next.connectivity);
     } catch {
       setMetrics(DASHBOARD_HEALTH_FALLBACKS);
+      setConnectivity(NO_CONNECTIVITY);
     } finally {
       setIsLoading(false);
     }
@@ -255,5 +294,5 @@ export function useDashboardHealthMetrics(): {
     }, [refresh]),
   );
 
-  return { metrics, isLoading };
+  return { metrics, connectivity, isLoading };
 }
