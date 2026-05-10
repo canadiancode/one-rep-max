@@ -6,8 +6,9 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
   APP_SHELL_SECONDARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
 } from "@/constants/app-shell";
+import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics";
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
@@ -15,6 +16,8 @@ const METRIC_ICON_CORNER_INSET = 14;
 const METRIC_ICON_CORNER_SIZE = 32;
 
 export default function MyBeastScreen() {
+  const { metrics } = useDashboardHealthMetrics();
+
   return (
     <ThemedView
       lightColor={APP_SHELL_SECONDARY_BACKGROUND}
@@ -53,7 +56,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  62
+                  {metrics.restingHeartRateBpm}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -92,7 +95,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  158
+                  {metrics.weightLbs}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -133,7 +136,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  8,342
+                  {metrics.steps.toLocaleString("en-US")}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -172,7 +175,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  1,024
+                  {metrics.activeEnergyKcal.toLocaleString("en-US")}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -213,7 +216,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  7
+                  {metrics.sleepHours}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -227,7 +230,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  24
+                  {metrics.sleepMinutes}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -266,7 +269,7 @@ export default function MyBeastScreen() {
                   darkColor="#FFFFFF"
                   style={styles.metricTileValue}
                 >
-                  64
+                  {metrics.waterOz}
                 </ThemedText>
                 <ThemedText
                   lightColor="#FFFFFF"
@@ -286,7 +289,50 @@ export default function MyBeastScreen() {
         </View>
       </View>
       <View style={[styles.row, styles.rowFull]}>
-        <FloatingShellSurface gutterColor={APP_SHELL_SECONDARY_BACKGROUND} />
+        <View style={styles.xpTileWrapper}>
+          <FloatingShellSurface gutterColor={APP_SHELL_SECONDARY_BACKGROUND} />
+          <View style={styles.xpTileOverlay} pointerEvents="none">
+            <View style={styles.xpHeaderRow}>
+              <ThemedText
+                lightColor="#FFFFFF"
+                darkColor="#FFFFFF"
+                style={styles.xpHeaderText}
+              >
+                Level 12
+              </ThemedText>
+              <ThemedText
+                lightColor="#FFFFFF"
+                darkColor="#FFFFFF"
+                style={styles.xpHeaderText}
+              >
+                1,850XP
+              </ThemedText>
+            </View>
+            <View style={styles.xpBarRow}>
+              <Image
+                accessibilityIgnoresInvertColors
+                source={require("@/assets/bars/xp-level-large.png")}
+                style={styles.xpBarFillImage}
+                contentFit="contain"
+              />
+              <Image
+                accessibilityIgnoresInvertColors
+                source={require("@/assets/bars/xp-level-container-large.png")}
+                style={styles.xpBarContainerImage}
+                contentFit="contain"
+              />
+            </View>
+            <View style={styles.xpFooterRow}>
+              <ThemedText
+                lightColor="#FFFFFF"
+                darkColor="#FFFFFF"
+                style={styles.xpFooterText}
+              >
+                650XP to level 13
+              </ThemedText>
+            </View>
+          </View>
+        </View>
       </View>
     </ThemedView>
   );
@@ -382,5 +428,51 @@ const styles = StyleSheet.create({
     width: METRIC_ICON_CORNER_SIZE,
     height: METRIC_ICON_CORNER_SIZE,
     zIndex: 2,
+  },
+  xpTileWrapper: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: 0,
+    position: "relative",
+  },
+  xpTileOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    paddingHorizontal: 30,
+    paddingVertical: 24,
+    justifyContent: "space-between",
+  },
+  xpHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  xpHeaderText: {
+    fontFamily: CELL_HEADING_FONT_FAMILY,
+    fontSize: 18,
+    lineHeight: 18,
+    fontWeight: "600",
+  },
+  xpBarRow: {
+    alignItems: "stretch",
+    justifyContent: "center",
+    height: 28,
+    position: "relative",
+  },
+  xpBarFillImage: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 1,
+  },
+  xpBarContainerImage: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
+  },
+  xpFooterRow: {
+    alignItems: "flex-end",
+  },
+  xpFooterText: {
+    fontFamily: CELL_HEADING_FONT_FAMILY,
+    fontSize: 14,
+    lineHeight: 14,
+    fontWeight: "600",
   },
 });

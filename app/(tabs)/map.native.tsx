@@ -3,12 +3,17 @@ import * as Location from "expo-location";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   type ImageSourcePropType,
+  Platform,
   Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
 } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, {
+  Marker,
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ThemedText } from "@/components/themed-text";
@@ -726,8 +731,14 @@ export default function MapScreen() {
       <View style={styles.mapStack}>
         <MapView
           ref={mapRef}
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={[...ONE_REP_MAX_GOOGLE_MAP_STYLE]}
+          provider={
+            Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+          }
+          customMapStyle={
+            Platform.OS === "android"
+              ? [...ONE_REP_MAX_GOOGLE_MAP_STYLE]
+              : undefined
+          }
           style={styles.map}
           initialRegion={INITIAL_REGION}
           showsUserLocation={userLocationVisible}
@@ -919,7 +930,7 @@ const styles = StyleSheet.create({
     backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: "rgba(240, 247, 255, 0.35)",
+    borderColor: APP_SHELL_PRIMARY_BACKGROUND,
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
