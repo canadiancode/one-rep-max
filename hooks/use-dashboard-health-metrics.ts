@@ -87,8 +87,7 @@ type ContributorAgg = {
 
 function isAppleHealthFamilyBundle(bundleId: string): boolean {
   return (
-    bundleId === "com.apple.health" ||
-    bundleId.startsWith("com.apple.health.")
+    bundleId === "com.apple.health" || bundleId.startsWith("com.apple.health.")
   );
 }
 
@@ -147,14 +146,12 @@ function contributorCardSubtitle(
   if (sw) {
     if (tl.includes("watch")) {
       const parts = sw.split(".");
-      const majorMinor =
-        parts.length >= 2 ? `${parts[0]}.${parts[1]}` : sw;
+      const majorMinor = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : sw;
       return `watchOS ${majorMinor}`;
     }
     if (tl.includes("iphone") || tl === "iphone") {
       const parts = sw.split(".");
-      const majorMinor =
-        parts.length >= 2 ? `${parts[0]}.${parts[1]}` : sw;
+      const majorMinor = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : sw;
       return `iOS ${majorMinor}`;
     }
   }
@@ -167,7 +164,10 @@ function contributorCardSubtitle(
   return undefined;
 }
 
-function contributorDedupeKey(bundleIdentifier: string, device?: Device): string {
+function contributorDedupeKey(
+  bundleIdentifier: string,
+  device?: Device,
+): string {
   return [
     bundleIdentifier,
     device?.hardwareVersion ?? "",
@@ -209,7 +209,9 @@ function mergeContributor(
   });
 }
 
-async function loadHealthKitContributors(): Promise<HealthKitDataContributor[]> {
+async function loadHealthKitContributors(): Promise<
+  HealthKitDataContributor[]
+> {
   const windowEnd = new Date();
   const windowStart = new Date(windowEnd.getTime() - CONTRIBUTOR_WINDOW_MS);
   const dateFilter = {

@@ -13,8 +13,9 @@ import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics"
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
-const METRIC_ICON_CORNER_INSET = 14;
-const METRIC_ICON_CORNER_SIZE = 32;
+/** Inset from tile edge; includes ~8px shell gutter + padding inside the rect card. */
+const METRIC_ICON_CORNER_INSET = 20;
+const METRIC_ICON_CORNER_SIZE = 25;
 
 const XP_BAR_DISPLAY_MIN = 5;
 const XP_BAR_DISPLAY_MAX = 98;
@@ -76,7 +77,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/red-square.png")}
+            tileSource={require("@/assets/backgrounds/red-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -124,7 +125,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/grey-square.png")}
+            tileSource={require("@/assets/backgrounds/grey-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -170,7 +171,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/green-square.png")}
+            tileSource={require("@/assets/backgrounds/yellow-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -214,7 +215,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/yellow-square.png")}
+            tileSource={require("@/assets/backgrounds/orange-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -264,7 +265,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/purple-square.png")}
+            tileSource={require("@/assets/backgrounds/purple-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -332,7 +333,7 @@ export default function MyBeastScreen() {
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
             gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
-            tileSource={require("@/assets/backgrounds/light-blue-square.png")}
+            tileSource={require("@/assets/backgrounds/light-blue-rect-card.png")}
           />
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
@@ -376,7 +377,10 @@ export default function MyBeastScreen() {
       </View>
       <View style={[styles.row, styles.rowFull]}>
         <View style={styles.xpTileWrapper}>
-          <FloatingShellSurface gutterColor={APP_SHELL_SECONDARY_BACKGROUND} />
+          <FloatingShellSurface
+            gutterColor={APP_SHELL_SECONDARY_BACKGROUND}
+            tileSource={require("@/assets/backgrounds/blue-rect-card.png")}
+          />
           <View style={styles.xpTileOverlay} pointerEvents="none">
             <View style={styles.xpHeaderRow}>
               <View style={styles.xpHeaderLeft}>
@@ -499,7 +503,7 @@ const styles = StyleSheet.create({
   },
   metricTileOverlay: {
     ...StyleSheet.absoluteFillObject,
-    paddingTop: 12,
+    paddingTop: 16,
     paddingHorizontal: 8,
   },
   /** Title + value row; inset so text does not sit under the corner icon. */
@@ -515,7 +519,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
     fontWeight: "600",
-    paddingTop: 8,
+    paddingTop: 14,
     textAlign: "center",
   },
   metricTileValue: {
