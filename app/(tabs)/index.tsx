@@ -13,7 +13,7 @@ import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics"
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
-/** Inset from tile edge; includes ~8px shell gutter + padding inside the rect card. */
+/** Inset from tile edge; includes shell gutter + padding inside the rect card. */
 const METRIC_ICON_CORNER_INSET = 20;
 const METRIC_ICON_CORNER_SIZE = 25;
 

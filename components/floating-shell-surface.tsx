@@ -9,7 +9,7 @@ import { APP_SHELL_SECONDARY_BACKGROUND } from "@/constants/app-colors";
 export const FLOATING_SURFACE_RADIUS = 15;
 
 /** Space around the inner shell so the gutter (usually a vivid layout color) stays visible. */
-export const FLOATING_SURFACE_GUTTER = 8;
+export const FLOATING_SURFACE_GUTTER = 4;
 
 /** Same asset as `HapticTab` for a consistent “tab tile” look. */
 const TILE_BG = require("@/assets/backgrounds/blue-square.png");
