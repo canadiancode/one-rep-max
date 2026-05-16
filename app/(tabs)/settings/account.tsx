@@ -1,5 +1,10 @@
-import { SettingsDetailPlaceholder } from "@/features/settings/components/settings-detail-placeholder";
+import { AccountSettingsForm } from "@/features/settings/components/account-settings-form";
+import { SettingsSubScreenLayout } from "@/features/settings/components/settings-sub-screen-layout";
 
 export default function AccountSettingsScreen() {
-  return <SettingsDetailPlaceholder routeId="account" />;
+  return (
+    <SettingsSubScreenLayout>
+      <AccountSettingsForm />
+    </SettingsSubScreenLayout>
+  );
 }
