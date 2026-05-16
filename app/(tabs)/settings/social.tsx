@@ -1,5 +1,10 @@
-import { SettingsDetailPlaceholder } from "@/features/settings/components/settings-detail-placeholder";
+import { SettingsSubScreenLayout } from "@/features/settings/components/settings-sub-screen-layout";
+import { SocialSettingsForm } from "@/features/settings/components/social-settings-form";
 
 export default function SocialSettingsScreen() {
-  return <SettingsDetailPlaceholder routeId="social" />;
+  return (
+    <SettingsSubScreenLayout>
+      <SocialSettingsForm />
+    </SettingsSubScreenLayout>
+  );
 }

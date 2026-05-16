@@ -1,5 +1,10 @@
-import { SettingsDetailPlaceholder } from "@/features/settings/components/settings-detail-placeholder";
+import { PreferencesSettingsForm } from "@/features/settings/components/preferences-settings-form";
+import { SettingsSubScreenLayout } from "@/features/settings/components/settings-sub-screen-layout";
 
 export default function PreferencesSettingsScreen() {
-  return <SettingsDetailPlaceholder routeId="preferences" />;
+  return (
+    <SettingsSubScreenLayout>
+      <PreferencesSettingsForm />
+    </SettingsSubScreenLayout>
+  );
 }
