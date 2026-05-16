@@ -2,7 +2,11 @@ import { useRouter } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
-import { APP_SHELL_SECONDARY_BACKGROUND } from "@/constants/app-shell";
+import {
+  APP_SHELL_INPUT_BOARDER_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-colors";
 
 type Props = {
   children: React.ReactNode;
@@ -22,8 +26,8 @@ export function SettingsSubScreenLayout({ children }: Props) {
           style={({ pressed }) => [styles.backHit, pressed && styles.backPressed]}
         >
           <ThemedText
-            lightColor="#FFFFFF"
-            darkColor="#FFFFFF"
+            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
             style={styles.backLabel}
           >
             ‹ Back
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(255,255,255,0.12)",
+    borderBottomColor: APP_SHELL_INPUT_BOARDER_COLOR,
   },
   backHit: {
     paddingVertical: 4,

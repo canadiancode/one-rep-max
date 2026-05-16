@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type { ImageStyle, StyleProp, ViewStyle } from "react-native";
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 
-import { APP_SHELL_SECONDARY_BACKGROUND } from "@/constants/app-shell";
+import { APP_SHELL_SECONDARY_BACKGROUND } from "@/constants/app-colors";
 
 /** Matches `tabBarStyle.borderRadius` in `app/(tabs)/_layout.tsx`. */
 export const FLOATING_SURFACE_RADIUS = 15;

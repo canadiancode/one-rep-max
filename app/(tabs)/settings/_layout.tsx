@@ -5,8 +5,8 @@ import { ThemedView } from "@/components/themed-view";
 import {
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
-} from "@/constants/app-shell";
+} from "@/constants/app-colors";
+import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 import { SettingsHeader } from "@/features/settings/components/settings-header";
 
 /** Keeps stack base as `index` so pushes to child routes resolve (see Expo Router settings). */

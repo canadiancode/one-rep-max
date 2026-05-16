@@ -1,5 +1,10 @@
-import { SettingsDetailPlaceholder } from "@/features/settings/components/settings-detail-placeholder";
+import { ProfileSettingsForm } from "@/features/settings/components/profile-settings-form";
+import { SettingsSubScreenLayout } from "@/features/settings/components/settings-sub-screen-layout";
 
 export default function ProfileSettingsScreen() {
-  return <SettingsDetailPlaceholder routeId="profile" />;
+  return (
+    <SettingsSubScreenLayout>
+      <ProfileSettingsForm />
+    </SettingsSubScreenLayout>
+  );
 }

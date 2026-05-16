@@ -14,10 +14,10 @@ import { View } from "react-native";
 import "react-native-reanimated";
 
 import {
-  APP_SHELL_PADDING,
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-} from "@/constants/app-shell";
+} from "@/constants/app-colors";
+import { APP_SHELL_PADDING } from "@/constants/app-shell";
 import { FONT_FAMILY } from "@/constants/fonts";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 

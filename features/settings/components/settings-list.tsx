@@ -3,7 +3,11 @@ import { router } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
-import { APP_SHELL_SECONDARY_BACKGROUND } from "@/constants/app-shell";
+import {
+  APP_SHELL_LABEL_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-colors";
 
 import {
   SETTINGS_ROW_BACKGROUND,
@@ -33,8 +37,8 @@ export function SettingsList() {
           const rowContent = (
             <View style={styles.listRowTextBlock}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={[
                   styles.listRowLabel,
                   isSignOut && styles.listRowLabelSignOut,
@@ -43,8 +47,8 @@ export function SettingsList() {
                 {row.label}
               </ThemedText>
               <ThemedText
-                lightColor="rgba(255,255,255,0.68)"
-                darkColor="rgba(255,255,255,0.68)"
+                lightColor={APP_SHELL_LABEL_COLOR}
+                darkColor={APP_SHELL_LABEL_COLOR}
                 style={[
                   styles.listRowCaption,
                   isSignOut && styles.listRowCaptionSignOut,

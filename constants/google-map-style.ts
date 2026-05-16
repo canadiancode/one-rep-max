@@ -1,7 +1,7 @@
 import {
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-} from "./app-shell";
+} from "./app-colors";
 
 /** Deep navy so water reads against land (#02284f). */
 const MAP_WATER = "#011428";

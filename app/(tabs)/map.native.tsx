@@ -19,10 +19,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
+  APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
-} from "@/constants/app-shell";
+} from "@/constants/app-colors";
+import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 import { ONE_REP_MAX_GOOGLE_MAP_STYLE } from "@/constants/google-map-style";
 
 /** Static gym pins; replace with API/DB later. */
@@ -804,8 +805,8 @@ export default function MapScreen() {
                 <View style={styles.sheetBottomBlock}>
                   <ThemedText
                     type="title"
-                    lightColor="#f0f7ff"
-                    darkColor="#f0f7ff"
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                     style={styles.sheetGymName}
                     numberOfLines={2}
                   >
@@ -819,8 +820,8 @@ export default function MapScreen() {
                         contentFit="contain"
                       />
                       <ThemedText
-                        lightColor="#f0f7ff"
-                        darkColor="#f0f7ff"
+                        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                         style={styles.sheetChatterCount}
                       >
                         8
@@ -835,16 +836,16 @@ export default function MapScreen() {
                         />
                         <View style={styles.sheetDriveMetrics}>
                           <ThemedText
-                            lightColor="#f0f7ff"
-                            darkColor="#f0f7ff"
+                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                             style={styles.sheetDriveText}
                             numberOfLines={1}
                           >
                             {driveEta.km.toFixed(1)}km
                           </ThemedText>
                           <ThemedText
-                            lightColor="#f0f7ff"
-                            darkColor="#f0f7ff"
+                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                             style={styles.sheetDriveSep}
                             accessibilityElementsHidden
                             importantForAccessibility="no"
@@ -852,8 +853,8 @@ export default function MapScreen() {
                             ·
                           </ThemedText>
                           <ThemedText
-                            lightColor="#f0f7ff"
-                            darkColor="#f0f7ff"
+                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                             style={styles.sheetDriveText}
                             numberOfLines={1}
                           >

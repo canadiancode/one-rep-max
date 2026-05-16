@@ -1,5 +1,10 @@
-import { SettingsDetailPlaceholder } from "@/features/settings/components/settings-detail-placeholder";
+import { HealthWearablesSettings } from "@/features/settings/components/health-wearables-settings";
+import { SettingsSubScreenLayout } from "@/features/settings/components/settings-sub-screen-layout";
 
 export default function HealthSettingsScreen() {
-  return <SettingsDetailPlaceholder routeId="health" />;
+  return (
+    <SettingsSubScreenLayout>
+      <HealthWearablesSettings />
+    </SettingsSubScreenLayout>
+  );
 }

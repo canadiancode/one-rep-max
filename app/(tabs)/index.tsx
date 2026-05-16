@@ -5,9 +5,10 @@ import { FloatingShellSurface } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
+  APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_SECONDARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
-} from "@/constants/app-shell";
+} from "@/constants/app-colors";
+import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics";
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
@@ -17,6 +18,7 @@ const METRIC_ICON_CORNER_SIZE = 32;
 
 const XP_BAR_DISPLAY_MIN = 5;
 const XP_BAR_DISPLAY_MAX = 98;
+
 function clampXpBarPercent(raw: number): number {
   if (raw >= XP_BAR_DISPLAY_MAX) return XP_BAR_DISPLAY_MAX - 1;
   return Math.max(XP_BAR_DISPLAY_MIN, raw);
@@ -40,6 +42,16 @@ const XP_BAR_RIGHT_END_WIDTH = 14;
  * the hard right edge of the clipped fill so the seam reads as a rounded end.
  */
 const XP_BAR_RIGHT_END_OFFSET = 8;
+
+const EM_DASH = "\u2014";
+
+function formatIntMetric(value: number, connected: boolean): string {
+  return connected ? String(value) : EM_DASH;
+}
+
+function formatGroupedInt(value: number, connected: boolean): string {
+  return connected ? value.toLocaleString("en-US") : EM_DASH;
+}
 
 export default function MyBeastScreen() {
   const { metrics, connectivity } = useDashboardHealthMetrics();
@@ -69,8 +81,8 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
@@ -78,19 +90,24 @@ export default function MyBeastScreen() {
               </ThemedText>
               <View style={styles.metricValueRow}>
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.metricTileValue}
                 >
-                  {metrics.restingHeartRateBpm}
+                  {formatIntMetric(
+                    metrics.restingHeartRateBpm,
+                    connectivity.restingHeartRateBpm,
+                  )}
                 </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  BPM
-                </ThemedText>
+                {connectivity.restingHeartRateBpm ? (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileUnit}
+                  >
+                    BPM
+                  </ThemedText>
+                ) : null}
               </View>
             </View>
             <Image
@@ -112,8 +129,8 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
@@ -121,19 +138,21 @@ export default function MyBeastScreen() {
               </ThemedText>
               <View style={styles.metricValueRow}>
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.metricTileValue}
                 >
-                  {metrics.weightLbs}
+                  {formatIntMetric(metrics.weightLbs, connectivity.weightLbs)}
                 </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  LBS
-                </ThemedText>
+                {connectivity.weightLbs ? (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileUnit}
+                  >
+                    LBS
+                  </ThemedText>
+                ) : null}
               </View>
             </View>
             <Image
@@ -156,8 +175,8 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
@@ -165,19 +184,21 @@ export default function MyBeastScreen() {
               </ThemedText>
               <View style={styles.metricValueRow}>
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.metricTileValue}
                 >
-                  {metrics.steps.toLocaleString("en-US")}
+                  {formatGroupedInt(metrics.steps, connectivity.steps)}
                 </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  STEPS
-                </ThemedText>
+                {connectivity.steps ? (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileUnit}
+                  >
+                    STEPS
+                  </ThemedText>
+                ) : null}
               </View>
             </View>
             <Image
@@ -198,8 +219,8 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
@@ -207,19 +228,24 @@ export default function MyBeastScreen() {
               </ThemedText>
               <View style={styles.metricValueRow}>
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.metricTileValue}
                 >
-                  {metrics.activeEnergyKcal.toLocaleString("en-US")}
+                  {formatGroupedInt(
+                    metrics.activeEnergyKcal,
+                    connectivity.activeEnergyKcal,
+                  )}
                 </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  KCAL
-                </ThemedText>
+                {connectivity.activeEnergyKcal ? (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileUnit}
+                  >
+                    KCAL
+                  </ThemedText>
+                ) : null}
               </View>
             </View>
             <Image
@@ -243,42 +269,54 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
                 Sleep
               </ThemedText>
               <View style={styles.metricValueRow}>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileValue}
-                >
-                  {metrics.sleepHours}
-                </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  H
-                </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileValue}
-                >
-                  {metrics.sleepMinutes}
-                </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  M
-                </ThemedText>
+                {connectivity.sleep ? (
+                  <>
+                    <ThemedText
+                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      style={styles.metricTileValue}
+                    >
+                      {metrics.sleepHours}
+                    </ThemedText>
+                    <ThemedText
+                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      style={styles.metricTileUnit}
+                    >
+                      H
+                    </ThemedText>
+                    <ThemedText
+                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      style={styles.metricTileValue}
+                    >
+                      {metrics.sleepMinutes}
+                    </ThemedText>
+                    <ThemedText
+                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      style={styles.metricTileUnit}
+                    >
+                      M
+                    </ThemedText>
+                  </>
+                ) : (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileValue}
+                  >
+                    {EM_DASH}
+                  </ThemedText>
+                )}
               </View>
             </View>
             <Image
@@ -299,8 +337,8 @@ export default function MyBeastScreen() {
           <View style={styles.metricTileOverlay} pointerEvents="none">
             <View style={styles.metricTileBody}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.metricTileTitle}
                 numberOfLines={1}
               >
@@ -308,19 +346,21 @@ export default function MyBeastScreen() {
               </ThemedText>
               <View style={styles.metricValueRow}>
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.metricTileValue}
                 >
-                  {metrics.waterOz}
+                  {formatIntMetric(metrics.waterOz, connectivity.waterOz)}
                 </ThemedText>
-                <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
-                  style={styles.metricTileUnit}
-                >
-                  OZ
-                </ThemedText>
+                {connectivity.waterOz ? (
+                  <ThemedText
+                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                    style={styles.metricTileUnit}
+                  >
+                    OZ
+                  </ThemedText>
+                ) : null}
               </View>
             </View>
             <Image
@@ -347,16 +387,16 @@ export default function MyBeastScreen() {
                   contentFit="contain"
                 />
                 <ThemedText
-                  lightColor="#FFFFFF"
-                  darkColor="#FFFFFF"
+                  lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                  darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.xpHeaderText}
                 >
                   Level 18
                 </ThemedText>
               </View>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.xpHeaderText}
               >
                 1,850XP
@@ -403,8 +443,8 @@ export default function MyBeastScreen() {
             </View>
             <View style={styles.xpFooterRow}>
               <ThemedText
-                lightColor="#FFFFFF"
-                darkColor="#FFFFFF"
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.xpFooterText}
               >
                 50XP to level 19

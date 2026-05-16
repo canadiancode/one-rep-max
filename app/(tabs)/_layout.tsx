@@ -6,11 +6,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { HapticTab } from "@/components/haptic-tab";
 import {
+  APP_SHELL_LABEL_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
-} from "@/constants/app-shell";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+} from "@/constants/app-colors";
 
 const TAB_ICON_SIZE = 28;
 
@@ -63,7 +63,6 @@ const tabItemLast: ViewStyle = {
 };
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const horizontalInset = Math.max(insets.left, insets.right);
   const tabBarBottomInset =
@@ -84,7 +83,8 @@ export default function TabLayout() {
         </View>
       )}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: APP_SHELL_MAIN_TEXT_COLOR,
+        tabBarInactiveTintColor: APP_SHELL_LABEL_COLOR,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarLabelStyle: { fontSize: 6 },

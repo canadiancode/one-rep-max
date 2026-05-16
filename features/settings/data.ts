@@ -7,7 +7,7 @@ export const SETTINGS_ROWS = [
   {
     id: "health",
     label: "Health & wearables",
-    caption: "Connected items, connections, syncing, etc",
+    caption: "Apple Health",
   },
   {
     id: "notifications",

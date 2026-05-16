@@ -3,15 +3,32 @@ import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
+  APP_SHELL_LABEL_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_PRIMARY_BACKGROUND,
-  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
-} from "@/constants/app-shell";
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-colors";
+import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 
 export default function ChatScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Chat</ThemedText>
-      <ThemedText style={styles.body}>
+    <ThemedView
+      style={styles.container}
+      lightColor={APP_SHELL_SECONDARY_BACKGROUND}
+      darkColor={APP_SHELL_SECONDARY_BACKGROUND}
+    >
+      <ThemedText
+        type="title"
+        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+      >
+        Chat
+      </ThemedText>
+      <ThemedText
+        style={styles.body}
+        lightColor={APP_SHELL_LABEL_COLOR}
+        darkColor={APP_SHELL_LABEL_COLOR}
+      >
         This is the community chat and announcements.
       </ThemedText>
     </ThemedView>
