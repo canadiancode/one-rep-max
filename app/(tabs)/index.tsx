@@ -4,12 +4,20 @@ import { StyleSheet, View } from "react-native";
 import { FloatingShellSurface } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { XpLevelBar } from "@/components/xp-level-bar";
 import {
   APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_SECONDARY_BACKGROUND,
 } from "@/constants/app-colors";
 import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics";
+import {
+  CURRENT_XP,
+  getBeastLevel,
+  getNextBeastLevel,
+  getXpBarFillPercent,
+  getXpRemainingToNextLevel,
+} from "@/lib/xp-progress";
 
 const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 
@@ -17,32 +25,10 @@ const CELL_HEADING_FONT_FAMILY = "PixeloidSans";
 const METRIC_ICON_CORNER_INSET = 20;
 const METRIC_ICON_CORNER_SIZE = 25;
 
-const XP_BAR_DISPLAY_MIN = 5;
-const XP_BAR_DISPLAY_MAX = 98;
-
-function clampXpBarPercent(raw: number): number {
-  if (raw >= XP_BAR_DISPLAY_MAX) return XP_BAR_DISPLAY_MAX - 1;
-  return Math.max(XP_BAR_DISPLAY_MIN, raw);
-}
-
-/** XP required to advance one level. Each level is a 100-point band. */
-const XP_PER_LEVEL = 100;
-
-/** Total lifetime XP. Replace with real source later. */
-const CURRENT_XP = 1850;
-
-/** Progress within the current level (0–100). e.g. 1850 → 50% of the way to next level. */
-const XP_BAR_FILL_PERCENT_RAW =
-  ((CURRENT_XP % XP_PER_LEVEL) / XP_PER_LEVEL) * 100;
-
-const XP_BAR_FILL_PERCENT = clampXpBarPercent(XP_BAR_FILL_PERCENT_RAW);
-/** Visual width of the rounded right-cap (px). Picked to match bar height. */
-const XP_BAR_RIGHT_END_WIDTH = 14;
-/**
- * How far LEFT the cap is shifted from the cut position. Lets the cap straddle
- * the hard right edge of the clipped fill so the seam reads as a rounded end.
- */
-const XP_BAR_RIGHT_END_OFFSET = 8;
+const XP_BAR_FILL_PERCENT = getXpBarFillPercent();
+const BEAST_LEVEL = getBeastLevel();
+const NEXT_BEAST_LEVEL = getNextBeastLevel();
+const XP_REMAINING_TO_NEXT_LEVEL = getXpRemainingToNextLevel();
 
 const EM_DASH = "\u2014";
 
@@ -395,7 +381,7 @@ export default function MyBeastScreen() {
                   darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.xpHeaderText}
                 >
-                  Level 18
+                  Level {BEAST_LEVEL}
                 </ThemedText>
               </View>
               <ThemedText
@@ -403,55 +389,17 @@ export default function MyBeastScreen() {
                 darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.xpHeaderText}
               >
-                1,850XP
+                {CURRENT_XP.toLocaleString("en-US")}XP
               </ThemedText>
             </View>
-            <View style={styles.xpBarRow}>
-              <View
-                style={[
-                  styles.xpBarFillClip,
-                  { width: `${XP_BAR_FILL_PERCENT}%` },
-                ]}
-              >
-                <Image
-                  accessibilityIgnoresInvertColors
-                  source={require("@/assets/bars/xp-level-large.png")}
-                  style={[
-                    styles.xpBarFillImage,
-                    XP_BAR_FILL_PERCENT > 0
-                      ? { width: `${10000 / XP_BAR_FILL_PERCENT}%` }
-                      : { width: "100%" },
-                  ]}
-                  contentFit="fill"
-                />
-              </View>
-              <View
-                style={[
-                  styles.xpBarFillRightEndWrap,
-                  { left: `${XP_BAR_FILL_PERCENT}%` },
-                ]}
-              >
-                <Image
-                  accessibilityIgnoresInvertColors
-                  source={require("@/assets/bars/xp-level-right-end.png")}
-                  style={styles.xpBarFillRightEndImage}
-                  contentFit="fill"
-                />
-              </View>
-              <Image
-                accessibilityIgnoresInvertColors
-                source={require("@/assets/bars/xp-level-container-large.png")}
-                style={styles.xpBarContainerImage}
-                contentFit="fill"
-              />
-            </View>
+            <XpLevelBar fillPercent={XP_BAR_FILL_PERCENT} style={styles.xpBarRow} />
             <View style={styles.xpFooterRow}>
               <ThemedText
                 lightColor={APP_SHELL_MAIN_TEXT_COLOR}
                 darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.xpFooterText}
               >
-                50XP to level 19
+                {XP_REMAINING_TO_NEXT_LEVEL}XP to level {NEXT_BEAST_LEVEL}
               </ThemedText>
             </View>
           </View>
@@ -593,40 +541,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   xpBarRow: {
-    alignItems: "stretch",
-    justifyContent: "center",
     height: 28,
-    position: "relative",
-  },
-  xpBarFillClip: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    bottom: 0,
-    overflow: "hidden",
-    zIndex: 1,
-  },
-  xpBarFillImage: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    bottom: 0,
-  },
-  xpBarFillRightEndWrap: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    width: XP_BAR_RIGHT_END_WIDTH,
-    marginLeft: -XP_BAR_RIGHT_END_OFFSET,
-    zIndex: 1,
-  },
-  xpBarFillRightEndImage: {
-    width: "100%",
-    height: "100%",
-  },
-  xpBarContainerImage: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 2,
   },
   xpFooterRow: {
     alignItems: "flex-end",
