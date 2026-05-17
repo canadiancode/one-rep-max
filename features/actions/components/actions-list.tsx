@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { ActionProgressBar } from "@/components/action-progress-bar";
 import { ThemedText } from "@/components/themed-text";
 import {
+  APP_SHELL_LABEL_COLOR,
   APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_SECONDARY_BACKGROUND,
 } from "@/constants/app-colors";
@@ -18,6 +19,7 @@ import {
   ACTION_ROWS,
   getActionRowBarSources,
   getActionRowFillPercent,
+  getActionRowProgressLabel,
 } from "../data";
 
 export function ActionsList() {
@@ -32,7 +34,7 @@ export function ActionsList() {
           <Pressable
             key={row.id}
             accessibilityRole="button"
-            accessibilityLabel={row.label}
+            accessibilityLabel={`${row.label}. ${getActionRowProgressLabel(row.id)}`}
             android_ripple={{ color: "rgba(255,255,255,0.12)" }}
             style={({ pressed }) => [
               styles.listRow,
@@ -78,6 +80,17 @@ export function ActionsList() {
                       fillPercent={getActionRowFillPercent(row.id)}
                       style={styles.listRowBar}
                     />
+                    <ThemedText
+                      lightColor={APP_SHELL_LABEL_COLOR}
+                      darkColor={APP_SHELL_LABEL_COLOR}
+                      style={styles.listRowProgressText}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      minimumFontScale={0.75}
+                      ellipsizeMode="tail"
+                    >
+                      {getActionRowProgressLabel(row.id)}
+                    </ThemedText>
                   </View>
                 </View>
                 <View
@@ -136,7 +149,6 @@ const styles = StyleSheet.create({
   },
   listRowImageShell: {
     width: "100%",
-    minHeight: 104,
     borderRadius: 12,
     overflow: "hidden",
   },
@@ -144,7 +156,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingLeft: 28,
     paddingRight: 20,
   },
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
   },
   listRowTextColumn: {
     flex: 1,
-    gap: 6,
+    gap: 4,
     minWidth: 0,
   },
   listRowBar: {
@@ -168,11 +180,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     flexShrink: 0,
-    marginLeft: 12,
+    marginLeft: 8,
   },
   listRowActionIcon: {
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
   },
   listRowIcon: {
     width: 56,
@@ -185,5 +197,10 @@ const styles = StyleSheet.create({
   listRowLabel: {
     fontSize: 15,
     lineHeight: 22,
+  },
+  listRowProgressText: {
+    fontSize: 9,
+    lineHeight: 11,
+    letterSpacing: 0,
   },
 });

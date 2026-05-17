@@ -9,6 +9,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/apple.png"),
     barFill: require("@/assets/bars/action-bar-red.png"),
     barEnd: require("@/assets/bars/action-bar-red-end.png"),
+    progressLabel: "2,500/2,500 KCAL",
   },
   {
     id: "water",
@@ -16,6 +17,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/water-drop.png"),
     barFill: require("@/assets/bars/action-bar-blue.png"),
     barEnd: require("@/assets/bars/action-bar-blue-end.png"),
+    progressLabel: "80 / 80 OZ",
   },
   {
     id: "train",
@@ -23,6 +25,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/dumbbell.png"),
     barFill: require("@/assets/bars/action-bar-grey.png"),
     barEnd: require("@/assets/bars/action-bar-grey-end.png"),
+    progressLabel: "60 / 60 MIN",
   },
   {
     id: "sleep",
@@ -30,6 +33,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/moon.png"),
     barFill: require("@/assets/bars/action-bar-purple.png"),
     barEnd: require("@/assets/bars/action-bar-purple-end.png"),
+    progressLabel: "8h / 8h",
   },
   {
     id: "steps",
@@ -37,6 +41,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/lightning.png"),
     barFill: require("@/assets/bars/action-bar-yellow.png"),
     barEnd: require("@/assets/bars/action-bar-yellow-end.png"),
+    progressLabel: "10,000 / 10,000 STEPS",
   },
   {
     id: "calories",
@@ -44,6 +49,7 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/fire.png"),
     barFill: require("@/assets/bars/action-bar-orange.png"),
     barEnd: require("@/assets/bars/action-bar-orange-end.png"),
+    progressLabel: "800 / 800 KCAL",
   },
 ] as const;
 
@@ -61,6 +67,11 @@ export function getActionRow(id: ActionRouteId) {
 export function getActionRowProgressPercent(_id: ActionRouteId): number {
   void _id;
   return 100;
+}
+
+/** e.g. `2,500/2,500 KCAL`. Replace the first value with live user data later. */
+export function getActionRowProgressLabel(id: ActionRouteId): string {
+  return getActionRow(id).progressLabel;
 }
 
 /** Clamped fill percent for the action bar artwork (10–90% display range). */
