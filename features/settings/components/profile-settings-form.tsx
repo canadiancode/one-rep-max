@@ -29,7 +29,7 @@ export function ProfileSettingsForm() {
           accessibilityLabel="Display name"
           value={displayName}
           onChangeText={setDisplayName}
-          placeholder="Fit_Pixel"
+          placeholder="Fit Pixel"
           placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
           style={styles.singleLineInput}
           autoCapitalize="words"

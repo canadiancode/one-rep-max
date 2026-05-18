@@ -23,7 +23,7 @@ const MAP_LABEL_STROKE = "#021428";
  * Google Maps JSON style (used with `PROVIDER_GOOGLE` + `customMapStyle`).
  * Tuned to {@link APP_SHELL_SECONDARY_BACKGROUND} land and {@link APP_SHELL_PRIMARY_BACKGROUND} accents.
  */
-export const ONE_REP_MAX_GOOGLE_MAP_STYLE = [
+export const FIT_PIXEL_GOOGLE_MAP_STYLE = [
   { elementType: "geometry", stylers: [{ color: APP_SHELL_SECONDARY_BACKGROUND }] },
   { elementType: "labels.text.stroke", stylers: [{ color: MAP_LABEL_STROKE }] },
   { elementType: "labels.text.fill", stylers: [{ color: MAP_LABEL }] },

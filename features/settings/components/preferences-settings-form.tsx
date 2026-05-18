@@ -50,7 +50,7 @@ export function PreferencesSettingsForm() {
           style={styles.sectionHint}
         >
           The app is on the blue look you see today. Other color themes unlock
-          as you earn XP and level your beast.
+          as you earn XP and level your pixel.
         </ThemedText>
         <View style={styles.themeList}>
           {THEME_OPTIONS.map((theme) => {

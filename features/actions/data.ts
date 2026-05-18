@@ -1,15 +1,16 @@
 import { clampActionBarPercent } from "@/lib/action-bar-progress";
 
-import { ACTION_BAR_CONTAINER } from "./constants";
+import { ACTION_BAR_CONTAINER, ACTION_ROW_ACCENT_COLORS } from "./constants";
 
-export const ACTION_ROWS = [
+export const ACTION_ROWS_DAILY = [
   {
     id: "food",
     label: "Food",
     icon: require("@/assets/icons/apple.png"),
     barFill: require("@/assets/bars/action-bar-red.png"),
     barEnd: require("@/assets/bars/action-bar-red-end.png"),
-    progressLabel: "2,500/2,500 KCAL",
+    progressCurrent: "2,500",
+    progressRest: "/2,500 KCAL",
   },
   {
     id: "water",
@@ -17,7 +18,8 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/water-drop.png"),
     barFill: require("@/assets/bars/action-bar-blue.png"),
     barEnd: require("@/assets/bars/action-bar-blue-end.png"),
-    progressLabel: "80 / 80 OZ",
+    progressCurrent: "80",
+    progressRest: " / 80 OZ",
   },
   {
     id: "train",
@@ -25,15 +27,17 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/dumbbell.png"),
     barFill: require("@/assets/bars/action-bar-grey.png"),
     barEnd: require("@/assets/bars/action-bar-grey-end.png"),
-    progressLabel: "60 / 60 MIN",
+    progressCurrent: "60",
+    progressRest: " / 60 MIN",
   },
   {
     id: "sleep",
     label: "Sleep",
-    icon: require("@/assets/icons/moon.png"),
+    icon: require("@/assets/icons/purple-moon.png"),
     barFill: require("@/assets/bars/action-bar-purple.png"),
     barEnd: require("@/assets/bars/action-bar-purple-end.png"),
-    progressLabel: "8h / 8h",
+    progressCurrent: "8h",
+    progressRest: " / 8h",
   },
   {
     id: "steps",
@@ -41,7 +45,8 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/lightning.png"),
     barFill: require("@/assets/bars/action-bar-yellow.png"),
     barEnd: require("@/assets/bars/action-bar-yellow-end.png"),
-    progressLabel: "10,000 / 10,000 STEPS",
+    progressCurrent: "10,000",
+    progressRest: " / 10,000 STEPS",
   },
   {
     id: "calories",
@@ -49,8 +54,28 @@ export const ACTION_ROWS = [
     icon: require("@/assets/icons/fire.png"),
     barFill: require("@/assets/bars/action-bar-orange.png"),
     barEnd: require("@/assets/bars/action-bar-orange-end.png"),
-    progressLabel: "800 / 800 KCAL",
+    progressCurrent: "800",
+    progressRest: " / 800 KCAL",
   },
+] as const;
+
+export const ACTION_ROWS_LONG_TERM = [
+  {
+    id: "weight",
+    label: "Weight",
+    icon: require("@/assets/icons/scale.png"),
+    barFill: require("@/assets/bars/action-bar-grey.png"),
+    barEnd: require("@/assets/bars/action-bar-grey-end.png"),
+    progressCurrent: "123",
+    progressRest: " / 123 LBS",
+  },
+] as const;
+
+export const ACTION_LIST_LONG_TERM_DIVIDER_LABEL = "long term progress";
+
+export const ACTION_ROWS = [
+  ...ACTION_ROWS_DAILY,
+  ...ACTION_ROWS_LONG_TERM,
 ] as const;
 
 export type ActionRouteId = (typeof ACTION_ROWS)[number]["id"];
@@ -69,9 +94,19 @@ export function getActionRowProgressPercent(_id: ActionRouteId): number {
   return 100;
 }
 
-/** e.g. `2,500/2,500 KCAL`. Replace the first value with live user data later. */
+export function getActionRowProgressDisplay(id: ActionRouteId) {
+  const row = getActionRow(id);
+  return {
+    current: row.progressCurrent,
+    rest: row.progressRest,
+    accentColor: ACTION_ROW_ACCENT_COLORS[id],
+  };
+}
+
+/** Full label for accessibility, e.g. `2,500/2,500 KCAL`. */
 export function getActionRowProgressLabel(id: ActionRouteId): string {
-  return getActionRow(id).progressLabel;
+  const { current, rest } = getActionRowProgressDisplay(id);
+  return `${current}${rest}`;
 }
 
 /** Clamped fill percent for the action bar artwork (10–90% display range). */

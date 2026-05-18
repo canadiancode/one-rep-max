@@ -27,7 +27,6 @@ const METRIC_ROWS: {
   { key: "weightLbs", label: "Weight" },
   { key: "steps", label: "Steps (today)" },
   { key: "activeEnergyKcal", label: "Active energy (today)" },
-  { key: "waterOz", label: "Water (today)" },
   { key: "sleep", label: "Sleep analysis" },
 ];
 

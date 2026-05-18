@@ -24,7 +24,7 @@ import {
   APP_SHELL_SECONDARY_BACKGROUND,
 } from "@/constants/app-colors";
 import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
-import { ONE_REP_MAX_GOOGLE_MAP_STYLE } from "@/constants/google-map-style";
+import { FIT_PIXEL_GOOGLE_MAP_STYLE } from "@/constants/google-map-style";
 
 /** Static gym pins; replace with API/DB later. */
 type HardcodedGym = {
@@ -737,7 +737,7 @@ export default function MapScreen() {
           }
           customMapStyle={
             Platform.OS === "android"
-              ? [...ONE_REP_MAX_GOOGLE_MAP_STYLE]
+              ? [...FIT_PIXEL_GOOGLE_MAP_STYLE]
               : undefined
           }
           style={styles.map}

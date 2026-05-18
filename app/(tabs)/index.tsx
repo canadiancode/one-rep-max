@@ -13,8 +13,8 @@ import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
 import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics";
 import {
   CURRENT_XP,
-  getBeastLevel,
-  getNextBeastLevel,
+  getPixelLevel,
+  getNextPixelLevel,
   getXpBarFillPercent,
   getXpRemainingToNextLevel,
 } from "@/lib/xp-progress";
@@ -26,8 +26,8 @@ const METRIC_ICON_CORNER_INSET = 20;
 const METRIC_ICON_CORNER_SIZE = 25;
 
 const XP_BAR_FILL_PERCENT = getXpBarFillPercent();
-const BEAST_LEVEL = getBeastLevel();
-const NEXT_BEAST_LEVEL = getNextBeastLevel();
+const PIXEL_LEVEL = getPixelLevel();
+const NEXT_PIXEL_LEVEL = getNextPixelLevel();
 const XP_REMAINING_TO_NEXT_LEVEL = getXpRemainingToNextLevel();
 
 const EM_DASH = "\u2014";
@@ -40,7 +40,7 @@ function formatGroupedInt(value: number, connected: boolean): string {
   return connected ? value.toLocaleString("en-US") : EM_DASH;
 }
 
-export default function MyBeastScreen() {
+export default function MyPixelScreen() {
   const { metrics, connectivity } = useDashboardHealthMetrics();
 
   return (
@@ -307,7 +307,7 @@ export default function MyBeastScreen() {
               </View>
             </View>
             <Image
-              source={require("@/assets/icons/moon.png")}
+              source={require("@/assets/icons/purple-moon.png")}
               style={[
                 styles.metricIconCorner,
                 !connectivity.sleep && styles.metricIconCornerInactive,
@@ -381,7 +381,7 @@ export default function MyBeastScreen() {
                   darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                   style={styles.xpHeaderText}
                 >
-                  Level {BEAST_LEVEL}
+                  Level {PIXEL_LEVEL}
                 </ThemedText>
               </View>
               <ThemedText
@@ -399,7 +399,7 @@ export default function MyBeastScreen() {
                 darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.xpFooterText}
               >
-                {XP_REMAINING_TO_NEXT_LEVEL}XP to level {NEXT_BEAST_LEVEL}
+                {XP_REMAINING_TO_NEXT_LEVEL}XP to level {NEXT_PIXEL_LEVEL}
               </ThemedText>
             </View>
           </View>

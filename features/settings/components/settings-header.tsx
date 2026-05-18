@@ -7,7 +7,7 @@ import {
   APP_SHELL_PRIMARY_BACKGROUND,
 } from "@/constants/app-colors";
 
-import { BEAST_IMAGE, DISPLAY_NAME } from "../constants";
+import { DISPLAY_NAME, PIXEL_IMAGE } from "../constants";
 
 export function SettingsHeader() {
   return (
@@ -22,10 +22,10 @@ export function SettingsHeader() {
         {DISPLAY_NAME}
       </ThemedText>
       <Image
-        accessibilityLabel="Beast avatar"
+        accessibilityLabel="Pixel avatar"
         accessibilityIgnoresInvertColors
-        source={BEAST_IMAGE}
-        style={styles.beastImage}
+        source={PIXEL_IMAGE}
+        style={styles.pixelImage}
         contentFit="contain"
       />
     </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 28,
   },
-  beastImage: {
+  pixelImage: {
     width: 80,
     height: 80,
   },

@@ -6,14 +6,15 @@ import {
   APP_SHELL_MAIN_TEXT_COLOR,
   APP_SHELL_PRIMARY_BACKGROUND,
 } from "@/constants/app-colors";
+
 import {
-  getXpBarFillPercent,
-  getXpProgressInCurrentLevelPercent,
-} from "@/lib/xp-progress";
+  ACTIONS_DAILY_PROGRESS_FILL_PERCENT,
+  ACTIONS_DAILY_PROGRESS_LABEL_PERCENT,
+} from "@/features/actions/constants";
 
 export function ActionsHeader() {
-  const fillPercent = getXpBarFillPercent();
-  const progressPercent = getXpProgressInCurrentLevelPercent();
+  const fillPercent = ACTIONS_DAILY_PROGRESS_FILL_PERCENT;
+  const progressPercent = ACTIONS_DAILY_PROGRESS_LABEL_PERCENT;
 
   return (
     <View style={styles.headerRow}>
@@ -37,7 +38,7 @@ export function ActionsHeader() {
   );
 }
 
-/** Matches `settings-header` beast image height so both blue bands align. */
+/** Matches `settings-header` pixel image height so both blue bands align. */
 const HEADER_CONTENT_HEIGHT = 80;
 
 const styles = StyleSheet.create({

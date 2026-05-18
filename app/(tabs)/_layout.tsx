@@ -109,7 +109,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "My Beast",
+          title: "My Pixel",
           tabBarItemStyle: tabItemFirst,
           tabBarIcon: ({ focused }) =>
             tabBarImageIcon(require("@/assets/icons/character.png"), focused),

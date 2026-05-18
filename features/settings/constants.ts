@@ -1,6 +1,6 @@
-export const DISPLAY_NAME = "Fit_Pixel";
+export const DISPLAY_NAME = "Fit Pixel";
 
-export const BEAST_IMAGE = require("@/assets/beast/beast-no-bg.png");
+export const PIXEL_IMAGE = require("@/assets/beast/beast-no-bg.png");
 
 export const SETTINGS_ROW_BACKGROUND = require("@/assets/backgrounds/settings-more-selections-button.png");
 export const SETTINGS_SIGN_OUT_BACKGROUND = require("@/assets/backgrounds/settings-sign-out-button.png");

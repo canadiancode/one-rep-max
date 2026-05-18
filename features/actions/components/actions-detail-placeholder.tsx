@@ -29,7 +29,7 @@ export function ActionsDetailPlaceholder({ routeId }: Props) {
           darkColor={APP_SHELL_MAIN_TEXT_COLOR}
           style={styles.body}
         >
-          Log {row.label.toLowerCase()} here to earn XP and help your beast
+          Log {row.label.toLowerCase()} here to earn XP and help your pixel
           grow. This flow is not wired up yet — use the back control to return
           to the actions list.
         </ThemedText>

@@ -24,15 +24,17 @@ export function getXpBarFillPercent(currentXp: number = CURRENT_XP): number {
   return clampXpBarPercent(getXpProgressInCurrentLevelPercent(currentXp));
 }
 
-export function getBeastLevel(currentXp: number = CURRENT_XP): number {
+export function getPixelLevel(currentXp: number = CURRENT_XP): number {
   return Math.floor(currentXp / XP_PER_LEVEL);
 }
 
-export function getNextBeastLevel(currentXp: number = CURRENT_XP): number {
-  return getBeastLevel(currentXp) + 1;
+export function getNextPixelLevel(currentXp: number = CURRENT_XP): number {
+  return getPixelLevel(currentXp) + 1;
 }
 
-export function getXpRemainingToNextLevel(currentXp: number = CURRENT_XP): number {
+export function getXpRemainingToNextLevel(
+  currentXp: number = CURRENT_XP,
+): number {
   const remainder = currentXp % XP_PER_LEVEL;
   return remainder === 0 ? XP_PER_LEVEL : XP_PER_LEVEL - remainder;
 }

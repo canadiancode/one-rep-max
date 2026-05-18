@@ -19,16 +19,13 @@ type Props = {
   /** Actual progress (0–100) shown as a label inside the bar. Omit to hide the label. */
   progressPercent?: number;
   style?: StyleProp<ViewStyle>;
-  /** Bar track height in px. Matches My Beast tile default. */
+  /** Bar track height in px. Matches My Pixel tile default. */
   height?: number;
 };
 
-export function XpLevelBar({
-  fillPercent,
-  progressPercent,
-  style,
-  height = 28,
-}: Props) {
+export function XpLevelBar(props: Props) {
+  const { fillPercent, progressPercent, style, height = 28 } = props;
+
   const percentLabel =
     progressPercent != null
       ? `${Math.round(progressPercent)}%`
