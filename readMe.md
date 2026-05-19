@@ -10,18 +10,41 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Run on a device or simulator (required — **Expo Go is not supported**)
+
+   This app uses Apple HealthKit via Nitro modules (`@kingstinct/react-native-healthkit`). Those native modules are **not** included in Expo Go. You need a [development build](https://docs.expo.dev/develop/development-builds/introduction/) installed on your phone or simulator.
+
+   **First time (install the dev app on your iPhone):**
 
    ```bash
-   npx expo start
+   npm run ios:device
+   ```
+
+   Connect the iPhone with USB (or set up wireless debugging in Xcode), trust the Mac, and pick your device when prompted. Xcode must be installed; use a free Apple ID for signing if needed.
+
+   **Every day (Metro + reload in the dev app):**
+
+   ```bash
+   npm start
+   ```
+
+   Open the **Fit Pixel** app on your phone (not Expo Go). If the phone cannot reach your Mac over Wi‑Fi, use a tunnel:
+
+   ```bash
+   npx expo start --dev-client --tunnel
+   ```
+
+   **Web only** (no HealthKit):
+
+   ```bash
+   npm run web
    ```
 
 In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/) — use this for iOS/Android
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 

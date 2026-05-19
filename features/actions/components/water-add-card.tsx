@@ -6,8 +6,9 @@ import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import {
-  WATER_ACTION_CARD_BACKGROUND,
+  WATER_ADD_CARD_BACKGROUND,
   WATER_ADD_ICON,
+  WATER_ADD_WATER_BUTTON_BACKGROUND,
   WATER_BULK_ADD_BACKGROUND,
   WATER_BULK_SERVING_OPTIONS_OZ,
   WATER_SERVING_OZ,
@@ -16,6 +17,7 @@ import {
 import { getActionRowProgressDisplay } from "../data";
 
 const WATER_ADD_CARD_TITLE = "Add Water";
+const WATER_ADD_WATER_BUTTON_LABEL = "ADD WATER";
 
 export function WaterAddCard() {
   const { accentColor } = getActionRowProgressDisplay("water");
@@ -35,7 +37,7 @@ export function WaterAddCard() {
         <Image
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={WATER_ACTION_CARD_BACKGROUND}
+          source={WATER_ADD_CARD_BACKGROUND}
           style={StyleSheet.absoluteFillObject}
           contentFit="fill"
         />
@@ -122,6 +124,31 @@ export function WaterAddCard() {
               ))}
             </View>
           </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Add water to today's total"
+            style={({ pressed }) => [
+              styles.addWaterButton,
+              pressed && styles.stepperPressed,
+            ]}
+          >
+            <View style={styles.addWaterButtonShell}>
+              <Image
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                source={WATER_ADD_WATER_BUTTON_BACKGROUND}
+                style={StyleSheet.absoluteFillObject}
+                contentFit="fill"
+              />
+              <ThemedText
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                style={styles.addWaterButtonLabel}
+              >
+                {WATER_ADD_WATER_BUTTON_LABEL}
+              </ThemedText>
+            </View>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -200,6 +227,25 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY,
     fontSize: 11,
     lineHeight: 14,
+    textAlign: "center",
+  },
+  addWaterButton: {
+    alignSelf: "stretch",
+  },
+  addWaterButtonShell: {
+    width: "100%",
+    minHeight: 48,
+    borderRadius: 8,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  addWaterButtonLabel: {
+    fontFamily: FONT_FAMILY,
+    fontSize: 12,
+    lineHeight: 16,
     textAlign: "center",
   },
 });

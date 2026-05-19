@@ -2,7 +2,11 @@ export const ACTION_ROW_BACKGROUND = require("@/assets/backgrounds/blue-rect-car
 
 /** Water detail summary card (same tile as action list rows). */
 export const WATER_ACTION_CARD_BACKGROUND = require("@/assets/backgrounds/blue-rect-card.png");
+
+/** Shell behind the Add Water stepper, bulk adds, and confirm button. */
+export const WATER_ADD_CARD_BACKGROUND = require("@/assets/backgrounds/blue-square-card.png");
 export const WATER_ACTION_CARD_ICON = require("@/assets/icons/water-drop.png");
+export const WATER_RIGHT_ARROW_ICON = require("@/assets/icons/right-arrow.png");
 export const WATER_SUBTRACT_ICON = require("@/assets/icons/subtract.png");
 export const WATER_ADD_ICON = require("@/assets/icons/add.png");
 
@@ -10,6 +14,9 @@ export const WATER_ADD_ICON = require("@/assets/icons/add.png");
 export const WATER_SERVING_OZ = 12;
 
 export const WATER_BULK_ADD_BACKGROUND = require("@/assets/backgrounds/bulk-add-blue.png");
+
+/** Full-width confirm control on the water detail screen. */
+export const WATER_ADD_WATER_BUTTON_BACKGROUND = require("@/assets/backgrounds/add-action.png");
 
 /** Quick-add serving sizes (oz) on the water detail screen. */
 export const WATER_BULK_SERVING_OPTIONS_OZ = [8, 12, 16, 24] as const;
