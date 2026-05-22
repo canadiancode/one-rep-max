@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* container & DOM */
+      body {
+        margin: 0 auto;
+        padding: 7px;
+        background: #02284f;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      #test-container {
+        display: block;
+        position: relative;
+        min-height: 300px;
+        min-width: 300px;
+        width: 100%;
+        content: "";
+      }
+      #test-container > .container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* y axis */
+      #yAxis {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column-reverse;
+        position: relative;
+        content: "";
+        width: 50px;
+        min-height: 300px;
+        height: 100%;
+        color: white;
+      }
+      #yAxis > p {
+        padding: 0;
+        margin: 0 auto;
+      }
+
+      /* x axis */
+      #xAxis {
+        display: block;
+        content: "";
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .xValues {
+        width: calc(100% - 50px);
+        height: 100%;
+        color: white;
+        display: flex;
+        justify-content: space-around;
+      }
+      .xValues > p {
+        min-width: 40px;
+        text-align: center;
+      }
+
+      /* data */
+      #data {
+        display: flex;
+        justify-content: space-around;
+        position: relative;
+        content: "";
+        min-width: calc(100% - 50px);
+        min-height: 100%;
+        align-items: flex-end;
+        padding-top: 7px;
+      }
+      .chart-marker-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 0;
+        box-sizing: border-box;
+        border-top: 2px dashed rgba(255, 255, 255, 0.05);
+        pointer-events: none;
+        z-index: 1;
+      }
+      #data .markers {
+        height: calc(100% - 7px);
+        width: 100%;
+        position: absolute;
+      }
+      .chart-target-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 0;
+        box-sizing: border-box;
+        border-top: 2px dashed rgba(255, 255, 255);
+        pointer-events: none;
+        z-index: 1;
+      }
+      .chart-data-bar {
+        display: block;
+        position: relative;
+        z-index: 2;
+        background: rgb(0, 0, 255, 0.5);
+        border: 1px solid blue;
+        width: 5%;
+        min-width: 25px;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="test-container">
+      <div class="container">
+        <div id="yAxis"></div>
+        <div id="data">
+          <div class="markers"></div>
+        </div>
+      </div>
+      <div id="xAxis">
+        <div class="xValues"></div>
+      </div>
+    </div>
+
+    <script>
+      // This is what will get fetched from the user db values
+      const chartInputs = {
+        userData: {
+          y: [1, 20, 40, 60, 80, 100, 120],
+          x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        },
+        targetVal: 90,
+        theme: "blue",
+      };
+
+      function generateMarkers(yValues, increment) {
+        const lowestVal = Math.min(...yValues);
+        const highestVal = Math.max(...yValues);
+        const diff = highestVal - lowestVal;
+        const lowestMarker = Math.floor(lowestVal / increment) * increment;
+        const highestMarker = Math.ceil(highestVal / increment) * increment;
+        const markers = [];
+        for (let i = lowestMarker; i <= highestMarker; i += increment) {
+          markers.push(i);
+        }
+        return [markers, lowestMarker, highestMarker];
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // DOM elements
+        const domContainer = document.querySelector("#test-container");
+        const yAxisContainer = domContainer.querySelector("#yAxis");
+        const xAxisContainer = domContainer.querySelector("#xAxis .xValues");
+        const dataContainer = domContainer.querySelector("#data");
+        const markerContainer = domContainer.querySelector("#data .markers");
+
+        // Data
+        const yValues = chartInputs.userData.y;
+        const xValues = chartInputs.userData.x;
+        const yMarkers = generateMarkers(chartInputs.userData.y, 20);
+        const targetVal = chartInputs.targetVal;
+        const theme = chartInputs.theme;
+
+        const markerValues = yMarkers[0];
+        const lowestMarker = yMarkers[1];
+        const highestMarker = yMarkers[2];
+        const range = highestMarker - lowestMarker;
+
+        // Add yAxis markers
+        markerValues.forEach((markerValue) => {
+          const yMarkerElements = document.createElement("p");
+          yMarkerElements.textContent = String(markerValue);
+          yAxisContainer.appendChild(yMarkerElements);
+        });
+
+        // markers
+        markerValues.forEach((markerValue) => {
+          const markerElement = document.createElement("div");
+          markerElement.classList.add("chart-marker-bar");
+          const percentFromBottom =
+            range > 0 ? ((markerValue - lowestMarker) / range) * 100 : 0;
+          markerElement.style.bottom = `${percentFromBottom}%`;
+          markerContainer.appendChild(markerElement);
+        });
+
+        // target marker
+        const targetElement = document.createElement("div");
+        targetElement.classList.add("chart-target-bar");
+        const percentFromBottom =
+          range > 0 ? ((targetVal - lowestMarker) / range) * 100 : 0;
+        targetElement.style.bottom = `${percentFromBottom}%`;
+        markerContainer.appendChild(targetElement);
+
+        // Add xAxis values
+        xValues.forEach((xValue) => {
+          const xElement = document.createElement("p");
+          xElement.textContent = xValue;
+          xAxisContainer.appendChild(xElement);
+        });
+
+        //Display data columns
+        yValues.forEach((yValue) => {
+          const dataBarElement = document.createElement("div");
+          dataBarElement.classList.add("chart-data-bar");
+          const percentHeight =
+            range > 0 ? ((yValue - lowestMarker) / range) * 100 : 0;
+          dataBarElement.style.height = `${percentHeight}%`;
+          dataContainer.appendChild(dataBarElement);
+        });
+      });
+    </script>
+  </body>
+</html>

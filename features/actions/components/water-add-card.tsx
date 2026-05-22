@@ -16,17 +16,24 @@ import {
 } from "../constants";
 import { getActionRowProgressDisplay } from "../data";
 
-const WATER_ADD_CARD_TITLE = "Add Water";
+const WATER_ADD_CARD_TITLE = "Add water";
 const WATER_ADD_WATER_BUTTON_LABEL = "ADD WATER";
 
 export function WaterAddCard() {
   const { accentColor } = getActionRowProgressDisplay("water");
-  const servingLabel = `${WATER_SERVING_OZ} oz`;
+  /** Replace with state when the stepper updates serving size. */
+  const servingOz: number = WATER_SERVING_OZ;
+  const servingSign = servingOz < 0 ? "-" : "+";
+  const servingAmountDisplay = `${servingSign}${Math.abs(servingOz)}oz`;
+  const servingA11y =
+    servingOz === 0
+      ? "0 ounces"
+      : `${servingOz > 0 ? "Plus" : "Minus"} ${Math.abs(servingOz)} ounces`;
 
   return (
     <View
       accessible
-      accessibilityLabel={`${WATER_ADD_CARD_TITLE}. ${servingLabel}`}
+      accessibilityLabel={`${WATER_ADD_CARD_TITLE}. ${servingA11y}`}
       style={styles.card}
     >
       <View
@@ -72,7 +79,7 @@ export function WaterAddCard() {
                 darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                 style={styles.servingLabel}
               >
-                {servingLabel}
+                {servingAmountDisplay}
               </ThemedText>
             </View>
             <Pressable
@@ -117,7 +124,7 @@ export function WaterAddCard() {
                       darkColor={APP_SHELL_MAIN_TEXT_COLOR}
                       style={styles.bulkLabel}
                     >
-                      + {oz}oz
+                      +{oz}oz
                     </ThemedText>
                   </View>
                 </Pressable>

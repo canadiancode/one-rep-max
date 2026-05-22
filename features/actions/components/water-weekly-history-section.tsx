@@ -1,6 +1,7 @@
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import { BarChart } from "@/components/charts/bar-chart";
 import { ThemedText } from "@/components/themed-text";
 import { APP_SHELL_LABEL_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
@@ -10,6 +11,21 @@ import { getActionRowProgressDisplay } from "../data";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
+/** Y-axis tick step for the weekly water chart (caller-driven, matches `bar-chart.html` default). */
+const WATER_WEEKLY_CHART_INCREMENT = 20;
+
+/** `true` = Y-axis from 0; `false` = Y-axis from data min (snapped to increment). */
+const WATER_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
+
+/** Placeholder weekly series (mirrors `bar-chart.html`); replace with DB/API fetch. */
+export const FAKE_WATER_WEEKLY_CHART_INPUTS = {
+  userData: {
+    y: [89, 80, 75, 95, 60, 90, 95],
+    x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  },
+  targetVal: 80,
+  theme: "blue" as const,
+};
 
 export function WaterWeeklyHistorySection() {
   const { accentColor } = getActionRowProgressDisplay("water");
@@ -54,6 +70,15 @@ export function WaterWeeklyHistorySection() {
           </View>
         </Pressable>
       </View>
+      <BarChart
+        increment={WATER_WEEKLY_CHART_INCREMENT}
+        targetLabelSuffix="oz"
+        targetVal={FAKE_WATER_WEEKLY_CHART_INPUTS.targetVal}
+        theme={FAKE_WATER_WEEKLY_CHART_INPUTS.theme}
+        userData={FAKE_WATER_WEEKLY_CHART_INPUTS.userData}
+        yDomainFromZero={WATER_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
+        accessibilityLabel="Water intake, last seven days"
+      />
     </View>
   );
 }
