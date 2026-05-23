@@ -21,6 +21,24 @@ export const WATER_ADD_WATER_BUTTON_BACKGROUND = require("@/assets/backgrounds/a
 /** Quick-add serving sizes (oz) on the water detail screen. */
 export const WATER_BULK_SERVING_OPTIONS_OZ = [8, 12, 16, 24] as const;
 
+/** Train detail shells: same background assets as the parallel water screens. */
+export const TRAIN_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
+export const TRAIN_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
+export const TRAIN_ACTION_CARD_ICON = require("@/assets/icons/dumbbell.png");
+export const TRAIN_ADD_TIME_BUTTON_BACKGROUND = WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const TRAIN_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
+
+/** Default increment when logging training time on the detail screen (minutes). */
+export const TRAIN_SERVING_MINUTES = 15;
+
+/** Quick-add durations on the train detail screen: label + minutes. */
+export const TRAIN_BULK_DURATION_OPTIONS = [
+  { label: "+15M", minutes: 15 },
+  { label: "+30M", minutes: 30 },
+  { label: "+1H", minutes: 60 },
+  { label: "+2H", minutes: 120 },
+] as const;
+
 /** Decorative controls on the right of each action row (whole card is tappable). */
 export const ACTION_CARD_GEAR_ICON = require("@/assets/icons/alt-gear.png");
 export const ACTION_CARD_PLUS_ICON = require("@/assets/icons/plus-alt.png");

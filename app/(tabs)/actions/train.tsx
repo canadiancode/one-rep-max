@@ -1,5 +1,26 @@
-import { ActionsDetailPlaceholder } from "@/features/actions/components/actions-detail-placeholder";
+import { StyleSheet, View } from "react-native";
+
+import { ActionsSubScreenLayout } from "@/features/actions/components/actions-sub-screen-layout";
+import { TrainAddCard } from "@/features/actions/components/train-add-card";
+import { TrainDailyTargetSection } from "@/features/actions/components/train-daily-target-section";
+import { TrainSummaryCard } from "@/features/actions/components/train-summary-card";
+import { TrainWeeklyHistorySection } from "@/features/actions/components/train-weekly-history-section";
 
 export default function TrainActionScreen() {
-  return <ActionsDetailPlaceholder routeId="train" />;
+  return (
+    <ActionsSubScreenLayout>
+      <View style={styles.cards}>
+        <TrainSummaryCard />
+        <TrainAddCard />
+        <TrainWeeklyHistorySection />
+        <TrainDailyTargetSection />
+      </View>
+    </ActionsSubScreenLayout>
+  );
 }
+
+const styles = StyleSheet.create({
+  cards: {
+    gap: 12,
+  },
+});
