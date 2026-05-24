@@ -52,8 +52,8 @@ export function TrainDailyTargetSection() {
         />
         <View style={styles.cardInner}>
           <ThemedText
-            lightColor={accentColor}
-            darkColor={accentColor}
+            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
             style={styles.title}
             accessibilityRole="header"
           >

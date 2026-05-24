@@ -14,13 +14,11 @@ import {
     WATER_ADD_ICON,
     WATER_SUBTRACT_ICON,
 } from "../constants";
-import { getActionRowProgressDisplay } from "../data";
 
 const TRAIN_ADD_CARD_TITLE = "Add time";
 const TRAIN_ADD_TIME_BUTTON_LABEL = "Add time";
 
 export function TrainAddCard() {
-  const { accentColor } = getActionRowProgressDisplay("train");
   /** Replace with state when the stepper updates serving size. */
   const servingMinutes: number = TRAIN_SERVING_MINUTES;
   const servingSign = servingMinutes < 0 ? "-" : "+";
@@ -50,8 +48,8 @@ export function TrainAddCard() {
         />
         <View style={styles.cardInner}>
           <ThemedText
-            lightColor={accentColor}
-            darkColor={accentColor}
+            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
             style={styles.title}
           >
             {TRAIN_ADD_CARD_TITLE}

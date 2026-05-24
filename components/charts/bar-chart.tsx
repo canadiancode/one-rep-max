@@ -6,6 +6,7 @@ import type {
   BarChartThemeId,
   BarChartUserData,
 } from "@/components/charts/bar-chart-types";
+import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 import {
   generateMarkers,
@@ -247,7 +248,7 @@ export function BarChart({
                   styles.plotTargetLabel,
                   {
                     bottom: targetBottomPx + TARGET_VALUE_GAP_ABOVE_LINE_PX,
-                    color: tokens.targetLine,
+                    color: APP_SHELL_MAIN_TEXT_COLOR,
                   },
                 ]}
               >

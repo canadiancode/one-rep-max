@@ -3,11 +3,13 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import { BarChart } from "@/components/charts/bar-chart";
 import { ThemedText } from "@/components/themed-text";
-import { APP_SHELL_LABEL_COLOR } from "@/constants/app-colors";
+import {
+  APP_SHELL_LABEL_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
+} from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import { WATER_RIGHT_ARROW_ICON } from "../constants";
-import { getActionRowProgressDisplay } from "../data";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
@@ -28,14 +30,12 @@ export const FAKE_TRAIN_WEEKLY_CHART_INPUTS = {
 };
 
 export function TrainWeeklyHistorySection() {
-  const { accentColor } = getActionRowProgressDisplay("train");
-
   return (
     <View accessible accessibilityLabel={SECTION_TITLE} style={styles.section}>
       <View style={styles.headerRow}>
         <ThemedText
-          lightColor={accentColor}
-          darkColor={accentColor}
+          lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+          darkColor={APP_SHELL_MAIN_TEXT_COLOR}
           style={styles.title}
           accessibilityRole="header"
         >

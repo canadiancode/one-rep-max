@@ -14,13 +14,11 @@ import {
   WATER_SERVING_OZ,
   WATER_SUBTRACT_ICON,
 } from "../constants";
-import { getActionRowProgressDisplay } from "../data";
 
 const WATER_ADD_CARD_TITLE = "Add water";
 const WATER_ADD_WATER_BUTTON_LABEL = "ADD WATER";
 
 export function WaterAddCard() {
-  const { accentColor } = getActionRowProgressDisplay("water");
   /** Replace with state when the stepper updates serving size. */
   const servingOz: number = WATER_SERVING_OZ;
   const servingSign = servingOz < 0 ? "-" : "+";
@@ -50,8 +48,8 @@ export function WaterAddCard() {
         />
         <View style={styles.cardInner}>
           <ThemedText
-            lightColor={accentColor}
-            darkColor={accentColor}
+            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
             style={styles.title}
           >
             {WATER_ADD_CARD_TITLE}

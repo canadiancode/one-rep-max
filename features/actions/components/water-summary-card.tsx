@@ -35,8 +35,8 @@ export function WaterSummaryCard() {
       style={styles.section}
     >
       <ThemedText
-        lightColor={accentColor}
-        darkColor={accentColor}
+        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
         style={styles.title}
       >
         {WATER_CARD_TITLE}

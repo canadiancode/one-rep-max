@@ -39,8 +39,8 @@ export function TrainSummaryCard() {
       style={styles.section}
     >
       <ThemedText
-        lightColor={valueGrey}
-        darkColor={valueGrey}
+        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
         style={styles.title}
       >
         {TRAIN_CARD_TITLE}
