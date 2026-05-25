@@ -7,30 +7,41 @@ import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import {
-  TRAIN_ACTION_CARD_BACKGROUND,
+  SLEEP_ACTION_CARD_BACKGROUND,
   WATER_ADD_ICON,
   WATER_SUBTRACT_ICON,
 } from "../constants";
 import { getActionRowProgressDisplay } from "../data";
 
 const SECTION_TITLE = "Daily target";
-const TARGET_STEP_MIN = 15;
-const TARGET_MIN_MIN = 15;
-const TARGET_MAX_MIN = 240;
+const TARGET_STEP_HOURS = 0.5;
+const TARGET_MIN_HOURS = 6;
+const TARGET_MAX_HOURS = 12;
 
-export function TrainDailyTargetSection() {
-  const { accentColor } = getActionRowProgressDisplay("train");
-  const [targetMin, setTargetMin] = useState(60);
+function formatSleepHours(h: number): string {
+  if (Number.isInteger(h)) {
+    return String(h);
+  }
+  return h.toFixed(1).replace(/\.0$/, "");
+}
+
+export function SleepDailyTargetSection() {
+  const { accentColor } = getActionRowProgressDisplay("sleep");
+  const [targetHours, setTargetHours] = useState(8);
 
   const decrease = useCallback(() => {
-    setTargetMin((m) => Math.max(TARGET_MIN_MIN, m - TARGET_STEP_MIN));
+    setTargetHours((t) =>
+      Math.max(TARGET_MIN_HOURS, Math.round((t - TARGET_STEP_HOURS) * 10) / 10),
+    );
   }, []);
 
   const increase = useCallback(() => {
-    setTargetMin((m) => Math.min(TARGET_MAX_MIN, m + TARGET_STEP_MIN));
+    setTargetHours((t) =>
+      Math.min(TARGET_MAX_HOURS, Math.round((t + TARGET_STEP_HOURS) * 10) / 10),
+    );
   }, []);
 
-  const valueA11y = `${targetMin} minutes`;
+  const valueA11y = `${formatSleepHours(targetHours)} hours`;
 
   return (
     <View
@@ -46,7 +57,7 @@ export function TrainDailyTargetSection() {
         <Image
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={TRAIN_ACTION_CARD_BACKGROUND}
+          source={SLEEP_ACTION_CARD_BACKGROUND}
           style={StyleSheet.absoluteFillObject}
           contentFit="fill"
         />
@@ -62,15 +73,15 @@ export function TrainDailyTargetSection() {
           <View style={styles.stepperRow}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Decrease daily training target"
-              accessibilityState={{ disabled: targetMin <= TARGET_MIN_MIN }}
+              accessibilityLabel="Decrease daily sleep target"
+              accessibilityState={{ disabled: targetHours <= TARGET_MIN_HOURS }}
               hitSlop={8}
-              disabled={targetMin <= TARGET_MIN_MIN}
+              disabled={targetHours <= TARGET_MIN_HOURS}
               onPress={decrease}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin <= TARGET_MIN_MIN && styles.stepperDisabled,
+                targetHours <= TARGET_MIN_HOURS && styles.stepperDisabled,
               ]}
             >
               <Image
@@ -92,22 +103,22 @@ export function TrainDailyTargetSection() {
                 style={styles.valueText}
               >
                 <Text style={[styles.valueNumber, { color: accentColor }]}>
-                  {targetMin}
+                  {formatSleepHours(targetHours)}
                 </Text>
-                <Text style={styles.valueSuffix}>M</Text>
+                <Text style={styles.valueSuffix}>H</Text>
               </Text>
             </View>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Increase daily training target"
-              accessibilityState={{ disabled: targetMin >= TARGET_MAX_MIN }}
+              accessibilityLabel="Increase daily sleep target"
+              accessibilityState={{ disabled: targetHours >= TARGET_MAX_HOURS }}
               hitSlop={8}
-              disabled={targetMin >= TARGET_MAX_MIN}
+              disabled={targetHours >= TARGET_MAX_HOURS}
               onPress={increase}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin >= TARGET_MAX_MIN && styles.stepperDisabled,
+                targetHours >= TARGET_MAX_HOURS && styles.stepperDisabled,
               ]}
             >
               <Image

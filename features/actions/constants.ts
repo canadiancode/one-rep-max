@@ -25,7 +25,8 @@ export const WATER_BULK_SERVING_OPTIONS_OZ = [8, 12, 16, 24] as const;
 export const TRAIN_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
 export const TRAIN_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
 export const TRAIN_ACTION_CARD_ICON = require("@/assets/icons/dumbbell.png");
-export const TRAIN_ADD_TIME_BUTTON_BACKGROUND = WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const TRAIN_ADD_TIME_BUTTON_BACKGROUND =
+  WATER_ADD_WATER_BUTTON_BACKGROUND;
 export const TRAIN_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
 
 /** Default increment when logging training time on the detail screen (minutes). */
@@ -33,6 +34,82 @@ export const TRAIN_SERVING_MINUTES = 15;
 
 /** Quick-add durations on the train detail screen: label + minutes. */
 export const TRAIN_BULK_DURATION_OPTIONS = [
+  { label: "+15M", minutes: 15 },
+  { label: "+30M", minutes: 30 },
+  { label: "+1H", minutes: 60 },
+  { label: "+2H", minutes: 120 },
+] as const;
+
+/** Steps detail: summary / target use rect tile; add-card matches other actions (square). */
+export const STEPS_ACTION_CARD_BACKGROUND = require("@/assets/backgrounds/blue-rect-card.png");
+export const STEPS_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
+export const STEPS_ACTION_CARD_ICON = require("@/assets/icons/lightning.png");
+export const STEPS_ADD_STEPS_BUTTON_BACKGROUND =
+  WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const STEPS_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
+
+/** Default increment when logging steps on the detail screen. */
+export const STEPS_SERVING_AMOUNT = 500;
+
+/** Quick-add step counts on the steps detail screen. */
+export const STEPS_BULK_AMOUNT_OPTIONS = [
+  { label: "+500", amount: 500 },
+  { label: "+1,000", amount: 1_000 },
+  { label: "+2,500", amount: 2_500 },
+  { label: "+5,000", amount: 5_000 },
+] as const;
+
+/** Calories detail: same blue shells as water / train. */
+export const CALORIES_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
+export const CALORIES_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
+export const CALORIES_ACTION_CARD_ICON = require("@/assets/icons/fire.png");
+export const CALORIES_ADD_CALORIES_BUTTON_BACKGROUND =
+  WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const CALORIES_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
+
+/** Default increment when logging calories on the detail screen (kcal). */
+export const CALORIES_SERVING_KCAL = 50;
+
+/** Quick-add calorie amounts on the calories detail screen. */
+export const CALORIES_BULK_KCAL_OPTIONS = [
+  { label: "+50", kcal: 50 },
+  { label: "+100", kcal: 100 },
+  { label: "+200", kcal: 200 },
+  { label: "+300", kcal: 300 },
+] as const;
+
+/** Weight detail: same blue shells as water / train. */
+export const WEIGHT_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
+export const WEIGHT_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
+export const WEIGHT_ACTION_CARD_ICON = require("@/assets/icons/scale.png");
+export const WEIGHT_ADD_WEIGHT_BUTTON_BACKGROUND =
+  WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const WEIGHT_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
+
+/** Default increment when logging weight on the detail screen (lbs). */
+export const WEIGHT_SERVING_LBS = 1;
+
+/** Quick-add weight deltas on the weight detail screen (whole lbs). */
+export const WEIGHT_BULK_LB_OPTIONS = [
+  { label: "+1", lbs: 1 },
+  { label: "+2", lbs: 2 },
+  { label: "+5", lbs: 5 },
+  { label: "+10", lbs: 10 },
+] as const;
+
+/** Sleep detail: same blue shells as water / train. */
+export const SLEEP_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
+export const SLEEP_ADD_CARD_BACKGROUND = WATER_ADD_CARD_BACKGROUND;
+export const SLEEP_ACTION_CARD_ICON = require("@/assets/icons/purple-moon.png");
+export const SLEEP_ADD_SLEEP_BUTTON_BACKGROUND =
+  WATER_ADD_WATER_BUTTON_BACKGROUND;
+export const SLEEP_BULK_ADD_BACKGROUND = WATER_BULK_ADD_BACKGROUND;
+
+/** Default increment when logging sleep duration on the detail screen (minutes). */
+export const SLEEP_SERVING_MINUTES = 30;
+
+/** Quick-add sleep durations on the sleep detail screen. */
+export const SLEEP_BULK_DURATION_OPTIONS = [
   { label: "+15M", minutes: 15 },
   { label: "+30M", minutes: 30 },
   { label: "+1H", minutes: 60 },
@@ -63,5 +140,6 @@ export const ACTION_ROW_ACCENT_COLORS = {
 export {
   ACTION_BAR_DISPLAY_MAX,
   ACTION_BAR_DISPLAY_MIN,
-  clampActionBarPercent,
+  clampActionBarPercent
 } from "@/lib/action-bar-progress";
+

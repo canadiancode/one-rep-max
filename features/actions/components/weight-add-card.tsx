@@ -1,41 +1,26 @@
 import { Image } from "expo-image";
-import { useCallback, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import {
-  TRAIN_ACTION_CARD_BACKGROUND,
   WATER_ADD_ICON,
   WATER_SUBTRACT_ICON,
+  WEIGHT_ADD_CARD_BACKGROUND,
+  WEIGHT_ADD_WEIGHT_BUTTON_BACKGROUND,
 } from "../constants";
-import { getActionRowProgressDisplay } from "../data";
 
-const SECTION_TITLE = "Daily target";
-const TARGET_STEP_MIN = 15;
-const TARGET_MIN_MIN = 15;
-const TARGET_MAX_MIN = 240;
+const WEIGHT_ADD_CARD_TITLE = "Input weight";
+const WEIGHT_ADD_BUTTON_LABEL = "Input weight";
+const WEIGHT_DISPLAY_VALUE = "123 LBS";
 
-export function TrainDailyTargetSection() {
-  const { accentColor } = getActionRowProgressDisplay("train");
-  const [targetMin, setTargetMin] = useState(60);
-
-  const decrease = useCallback(() => {
-    setTargetMin((m) => Math.max(TARGET_MIN_MIN, m - TARGET_STEP_MIN));
-  }, []);
-
-  const increase = useCallback(() => {
-    setTargetMin((m) => Math.min(TARGET_MAX_MIN, m + TARGET_STEP_MIN));
-  }, []);
-
-  const valueA11y = `${targetMin} minutes`;
-
+export function WeightAddCard() {
   return (
     <View
       accessible
-      accessibilityLabel={`${SECTION_TITLE}. ${valueA11y}`}
+      accessibilityLabel={`${WEIGHT_ADD_CARD_TITLE}. ${WEIGHT_DISPLAY_VALUE}`}
       style={styles.card}
     >
       <View
@@ -46,7 +31,7 @@ export function TrainDailyTargetSection() {
         <Image
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={TRAIN_ACTION_CARD_BACKGROUND}
+          source={WEIGHT_ADD_CARD_BACKGROUND}
           style={StyleSheet.absoluteFillObject}
           contentFit="fill"
         />
@@ -55,22 +40,17 @@ export function TrainDailyTargetSection() {
             lightColor={APP_SHELL_MAIN_TEXT_COLOR}
             darkColor={APP_SHELL_MAIN_TEXT_COLOR}
             style={styles.title}
-            accessibilityRole="header"
           >
-            {SECTION_TITLE}
+            {WEIGHT_ADD_CARD_TITLE}
           </ThemedText>
           <View style={styles.stepperRow}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Decrease daily training target"
-              accessibilityState={{ disabled: targetMin <= TARGET_MIN_MIN }}
+              accessibilityLabel="Decrease weight log amount"
               hitSlop={8}
-              disabled={targetMin <= TARGET_MIN_MIN}
-              onPress={decrease}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin <= TARGET_MIN_MIN && styles.stepperDisabled,
               ]}
             >
               <Image
@@ -80,34 +60,22 @@ export function TrainDailyTargetSection() {
                 contentFit="contain"
               />
             </Pressable>
-            <View
-              style={styles.stepperColumn}
-              accessible
-              accessibilityLabel={valueA11y}
-            >
-              <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                minimumFontScale={0.75}
-                style={styles.valueText}
+            <View style={styles.stepperColumn}>
+              <ThemedText
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                style={styles.servingLabel}
               >
-                <Text style={[styles.valueNumber, { color: accentColor }]}>
-                  {targetMin}
-                </Text>
-                <Text style={styles.valueSuffix}>M</Text>
-              </Text>
+                {WEIGHT_DISPLAY_VALUE}
+              </ThemedText>
             </View>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Increase daily training target"
-              accessibilityState={{ disabled: targetMin >= TARGET_MAX_MIN }}
+              accessibilityLabel="Increase weight log amount"
               hitSlop={8}
-              disabled={targetMin >= TARGET_MAX_MIN}
-              onPress={increase}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin >= TARGET_MAX_MIN && styles.stepperDisabled,
               ]}
             >
               <Image
@@ -118,6 +86,31 @@ export function TrainDailyTargetSection() {
               />
             </Pressable>
           </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Input weight to log"
+            style={({ pressed }) => [
+              styles.addButton,
+              pressed && styles.stepperPressed,
+            ]}
+          >
+            <View style={styles.addButtonShell}>
+              <Image
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                source={WEIGHT_ADD_WEIGHT_BUTTON_BACKGROUND}
+                style={StyleSheet.absoluteFillObject}
+                contentFit="fill"
+              />
+              <ThemedText
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                style={styles.addButtonLabel}
+              >
+                {WEIGHT_ADD_BUTTON_LABEL}
+              </ThemedText>
+            </View>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -144,8 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     fontWeight: "600",
-    alignSelf: "stretch",
-    textAlign: "center",
+    alignSelf: "flex-start",
   },
   stepperRow: {
     flexDirection: "row",
@@ -165,23 +157,29 @@ const styles = StyleSheet.create({
   stepperPressed: {
     opacity: 0.85,
   },
-  stepperDisabled: {
-    opacity: 0.35,
-  },
-  valueText: {
+  servingLabel: {
     fontFamily: FONT_FAMILY,
+    fontSize: 18,
+    lineHeight: 22,
     textAlign: "center",
   },
-  valueNumber: {
-    fontFamily: FONT_FAMILY,
-    fontSize: 27.5,
-    lineHeight: 35,
+  addButton: {
+    alignSelf: "stretch",
   },
-  valueSuffix: {
+  addButtonShell: {
+    width: "100%",
+    minHeight: 48,
+    borderRadius: 8,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  addButtonLabel: {
     fontFamily: FONT_FAMILY,
-    fontSize: 20,
-    lineHeight: 25,
-    marginLeft: 6,
-    color: APP_SHELL_MAIN_TEXT_COLOR,
+    fontSize: 12,
+    lineHeight: 16,
+    textAlign: "center",
   },
 });

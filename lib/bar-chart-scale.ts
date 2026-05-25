@@ -52,6 +52,25 @@ export function generateMarkers(
   };
 }
 
+/**
+ * Compact Y-axis tick text: values ≥ 1_000 use a `K` suffix (e.g. `10_000` → `10K`, `9_500` → `9.5K`).
+ * Values below 1_000 stay as plain integers (e.g. steps in hundreds, minutes, ounces).
+ */
+export function formatBarChartYAxisLabel(value: number): string {
+  if (!Number.isFinite(value)) {
+    return "";
+  }
+  const abs = Math.abs(value);
+  if (abs < 1000) {
+    return String(Math.trunc(value));
+  }
+  const sign = value < 0 ? "-" : "";
+  const k = abs / 1000;
+  const rounded = Number.isInteger(k) ? k : Math.round(k * 10) / 10;
+  const body = String(rounded).replace(/\.0$/, "");
+  return `${sign}${body}K`;
+}
+
 /** Same formula as the HTML chart: percent distance from the bottom of the plot. */
 export function percentHeightFromBottom(
   value: number,

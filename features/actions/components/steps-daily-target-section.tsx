@@ -7,30 +7,30 @@ import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import {
-  TRAIN_ACTION_CARD_BACKGROUND,
+  STEPS_ACTION_CARD_BACKGROUND,
   WATER_ADD_ICON,
   WATER_SUBTRACT_ICON,
 } from "../constants";
 import { getActionRowProgressDisplay } from "../data";
 
 const SECTION_TITLE = "Daily target";
-const TARGET_STEP_MIN = 15;
-const TARGET_MIN_MIN = 15;
-const TARGET_MAX_MIN = 240;
+const TARGET_STEP = 500;
+const TARGET_MIN = 1_000;
+const TARGET_MAX = 50_000;
 
-export function TrainDailyTargetSection() {
-  const { accentColor } = getActionRowProgressDisplay("train");
-  const [targetMin, setTargetMin] = useState(60);
+export function StepsDailyTargetSection() {
+  const { accentColor } = getActionRowProgressDisplay("steps");
+  const [targetSteps, setTargetSteps] = useState(10_000);
 
   const decrease = useCallback(() => {
-    setTargetMin((m) => Math.max(TARGET_MIN_MIN, m - TARGET_STEP_MIN));
+    setTargetSteps((n) => Math.max(TARGET_MIN, n - TARGET_STEP));
   }, []);
 
   const increase = useCallback(() => {
-    setTargetMin((m) => Math.min(TARGET_MAX_MIN, m + TARGET_STEP_MIN));
+    setTargetSteps((n) => Math.min(TARGET_MAX, n + TARGET_STEP));
   }, []);
 
-  const valueA11y = `${targetMin} minutes`;
+  const valueA11y = `${targetSteps.toLocaleString("en-US")} steps`;
 
   return (
     <View
@@ -46,7 +46,7 @@ export function TrainDailyTargetSection() {
         <Image
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={TRAIN_ACTION_CARD_BACKGROUND}
+          source={STEPS_ACTION_CARD_BACKGROUND}
           style={StyleSheet.absoluteFillObject}
           contentFit="fill"
         />
@@ -62,15 +62,15 @@ export function TrainDailyTargetSection() {
           <View style={styles.stepperRow}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Decrease daily training target"
-              accessibilityState={{ disabled: targetMin <= TARGET_MIN_MIN }}
+              accessibilityLabel="Decrease daily steps target"
+              accessibilityState={{ disabled: targetSteps <= TARGET_MIN }}
               hitSlop={8}
-              disabled={targetMin <= TARGET_MIN_MIN}
+              disabled={targetSteps <= TARGET_MIN}
               onPress={decrease}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin <= TARGET_MIN_MIN && styles.stepperDisabled,
+                targetSteps <= TARGET_MIN && styles.stepperDisabled,
               ]}
             >
               <Image
@@ -91,23 +91,25 @@ export function TrainDailyTargetSection() {
                 minimumFontScale={0.75}
                 style={styles.valueText}
               >
-                <Text style={[styles.valueNumber, { color: accentColor }]}>
-                  {targetMin}
+                <Text
+                  style={[styles.valueNumber, { color: accentColor }]}
+                >
+                  {targetSteps.toLocaleString("en-US")}
                 </Text>
-                <Text style={styles.valueSuffix}>M</Text>
+                <Text style={styles.valueSuffix}>STEPS</Text>
               </Text>
             </View>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Increase daily training target"
-              accessibilityState={{ disabled: targetMin >= TARGET_MAX_MIN }}
+              accessibilityLabel="Increase daily steps target"
+              accessibilityState={{ disabled: targetSteps >= TARGET_MAX }}
               hitSlop={8}
-              disabled={targetMin >= TARGET_MAX_MIN}
+              disabled={targetSteps >= TARGET_MAX}
               onPress={increase}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin >= TARGET_MAX_MIN && styles.stepperDisabled,
+                targetSteps >= TARGET_MAX && styles.stepperDisabled,
               ]}
             >
               <Image

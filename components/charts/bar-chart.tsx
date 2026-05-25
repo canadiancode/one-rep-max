@@ -9,6 +9,7 @@ import type {
 import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 import {
+  formatBarChartYAxisLabel,
   generateMarkers,
   percentHeightFromBottom,
 } from "@/lib/bar-chart-scale";
@@ -48,8 +49,10 @@ export type BarChartProps = {
   targetVal: number;
   increment: number;
   theme: BarChartThemeId;
-  /** Appended to the on-chart target label (e.g. `" oz"` → `90 oz`). */
+  /** Appended to the on-chart target label (e.g. `" oz"` → `90 oz`). Ignored when `targetLabel` is set. */
   targetLabelSuffix?: string;
+  /** Full on-chart goal label; when set, overrides `String(targetVal) + (targetLabelSuffix ?? "")`. */
+  targetLabel?: string;
   /**
    * When `true`, Y-axis starts at 0. When `false`, the floor is the data minimum snapped to
    * `increment` (original HTML chart behavior).
@@ -81,6 +84,7 @@ export function BarChart({
   increment,
   theme,
   targetLabelSuffix,
+  targetLabel: targetLabelOverride,
   yDomainFromZero = false,
   accessibilityLabel: accessibilityLabelProp,
 }: BarChartProps) {
@@ -108,7 +112,9 @@ export function BarChart({
     plotWidth > 0 ? plotWidth * BAR_WIDTH_PERCENT : BAR_MIN_WIDTH,
   );
 
-  const targetLabelText = `${String(targetVal)}${targetLabelSuffix ?? ""}`;
+  const targetLabelText =
+    targetLabelOverride ??
+    `${String(targetVal)}${targetLabelSuffix ?? ""}`;
 
   const accessibilityLabel =
     accessibilityLabelProp ??
@@ -142,7 +148,7 @@ export function BarChart({
               key={`y-${String(markerValue)}`}
               style={[styles.yAxisLabel, { color: tokens.axisText }]}
             >
-              {String(markerValue)}
+              {formatBarChartYAxisLabel(markerValue)}
             </Text>
           ))}
         </View>

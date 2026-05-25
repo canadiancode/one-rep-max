@@ -13,23 +13,22 @@ import { WATER_RIGHT_ARROW_ICON } from "../constants";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
-/** Y-axis tick step for the weekly training chart (minutes). */
-const TRAIN_WEEKLY_CHART_INCREMENT = 15;
+/** Y-axis tick step for the monthly weight chart (lbs). */
+const WEIGHT_MONTHLY_CHART_INCREMENT = 20;
 
-/** `true` = Y-axis from 0; `false` = Y-axis from data min (snapped to increment). */
-const TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
+const WEIGHT_MONTHLY_CHART_Y_DOMAIN_FROM_ZERO = true;
 
-/** Placeholder weekly series (training minutes); replace with DB/API fetch. */
-export const FAKE_TRAIN_WEEKLY_CHART_INPUTS = {
+/** Placeholder monthly series (lbs); x-axis uses month abbreviations. Replace with DB/API fetch. */
+export const FAKE_WEIGHT_MONTHLY_CHART_INPUTS = {
   userData: {
-    y: [45, 55, 40, 70, 50, 65, 60],
-    x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    y: [163, 159, 151, 143, 145, 131, 123],
+    x: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
   },
-  targetVal: 60,
+  targetVal: 123,
   theme: "blue" as const,
 };
 
-export function TrainWeeklyHistorySection() {
+export function WeightMonthlyHistorySection() {
   return (
     <View accessible accessibilityLabel={SECTION_TITLE} style={styles.section}>
       <View style={styles.headerRow}>
@@ -71,13 +70,13 @@ export function TrainWeeklyHistorySection() {
         </Pressable>
       </View>
       <BarChart
-        increment={TRAIN_WEEKLY_CHART_INCREMENT}
-        targetLabelSuffix="M"
-        targetVal={FAKE_TRAIN_WEEKLY_CHART_INPUTS.targetVal}
-        theme={FAKE_TRAIN_WEEKLY_CHART_INPUTS.theme}
-        userData={FAKE_TRAIN_WEEKLY_CHART_INPUTS.userData}
-        yDomainFromZero={TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
-        accessibilityLabel="Training time, last seven days"
+        increment={WEIGHT_MONTHLY_CHART_INCREMENT}
+        targetLabel={`${String(FAKE_WEIGHT_MONTHLY_CHART_INPUTS.targetVal)} LBS`}
+        targetVal={FAKE_WEIGHT_MONTHLY_CHART_INPUTS.targetVal}
+        theme={FAKE_WEIGHT_MONTHLY_CHART_INPUTS.theme}
+        userData={FAKE_WEIGHT_MONTHLY_CHART_INPUTS.userData}
+        yDomainFromZero={WEIGHT_MONTHLY_CHART_Y_DOMAIN_FROM_ZERO}
+        accessibilityLabel="Weight by month"
       />
     </View>
   );

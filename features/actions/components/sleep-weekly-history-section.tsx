@@ -13,23 +13,22 @@ import { WATER_RIGHT_ARROW_ICON } from "../constants";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
-/** Y-axis tick step for the weekly training chart (minutes). */
-const TRAIN_WEEKLY_CHART_INCREMENT = 15;
+/** Y-axis tick step for the weekly sleep chart (hours). */
+const SLEEP_WEEKLY_CHART_INCREMENT = 1;
 
-/** `true` = Y-axis from 0; `false` = Y-axis from data min (snapped to increment). */
-const TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
+const SLEEP_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
 
-/** Placeholder weekly series (training minutes); replace with DB/API fetch. */
-export const FAKE_TRAIN_WEEKLY_CHART_INPUTS = {
+/** Placeholder weekly series (hours slept); replace with DB/API fetch. */
+export const FAKE_SLEEP_WEEKLY_CHART_INPUTS = {
   userData: {
-    y: [45, 55, 40, 70, 50, 65, 60],
+    y: [7, 8, 6, 8, 7, 9, 8],
     x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
   },
-  targetVal: 60,
+  targetVal: 8,
   theme: "blue" as const,
 };
 
-export function TrainWeeklyHistorySection() {
+export function SleepWeeklyHistorySection() {
   return (
     <View accessible accessibilityLabel={SECTION_TITLE} style={styles.section}>
       <View style={styles.headerRow}>
@@ -71,13 +70,13 @@ export function TrainWeeklyHistorySection() {
         </Pressable>
       </View>
       <BarChart
-        increment={TRAIN_WEEKLY_CHART_INCREMENT}
-        targetLabelSuffix="M"
-        targetVal={FAKE_TRAIN_WEEKLY_CHART_INPUTS.targetVal}
-        theme={FAKE_TRAIN_WEEKLY_CHART_INPUTS.theme}
-        userData={FAKE_TRAIN_WEEKLY_CHART_INPUTS.userData}
-        yDomainFromZero={TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
-        accessibilityLabel="Training time, last seven days"
+        increment={SLEEP_WEEKLY_CHART_INCREMENT}
+        targetLabel={`${String(FAKE_SLEEP_WEEKLY_CHART_INPUTS.targetVal)}H`}
+        targetVal={FAKE_SLEEP_WEEKLY_CHART_INPUTS.targetVal}
+        theme={FAKE_SLEEP_WEEKLY_CHART_INPUTS.theme}
+        userData={FAKE_SLEEP_WEEKLY_CHART_INPUTS.userData}
+        yDomainFromZero={SLEEP_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
+        accessibilityLabel="Sleep hours, last seven days"
       />
     </View>
   );

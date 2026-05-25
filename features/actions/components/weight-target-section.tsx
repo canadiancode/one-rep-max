@@ -7,30 +7,30 @@ import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import {
-  TRAIN_ACTION_CARD_BACKGROUND,
   WATER_ADD_ICON,
   WATER_SUBTRACT_ICON,
+  WEIGHT_ACTION_CARD_BACKGROUND,
 } from "../constants";
 import { getActionRowProgressDisplay } from "../data";
 
-const SECTION_TITLE = "Daily target";
-const TARGET_STEP_MIN = 15;
-const TARGET_MIN_MIN = 15;
-const TARGET_MAX_MIN = 240;
+const SECTION_TITLE = "Target";
+const TARGET_STEP_LBS = 1;
+const TARGET_MIN_LBS = 100;
+const TARGET_MAX_LBS = 400;
 
-export function TrainDailyTargetSection() {
-  const { accentColor } = getActionRowProgressDisplay("train");
-  const [targetMin, setTargetMin] = useState(60);
+export function WeightTargetSection() {
+  const { accentColor } = getActionRowProgressDisplay("weight");
+  const [targetLbs, setTargetLbs] = useState(123);
 
   const decrease = useCallback(() => {
-    setTargetMin((m) => Math.max(TARGET_MIN_MIN, m - TARGET_STEP_MIN));
+    setTargetLbs((lbs) => Math.max(TARGET_MIN_LBS, lbs - TARGET_STEP_LBS));
   }, []);
 
   const increase = useCallback(() => {
-    setTargetMin((m) => Math.min(TARGET_MAX_MIN, m + TARGET_STEP_MIN));
+    setTargetLbs((lbs) => Math.min(TARGET_MAX_LBS, lbs + TARGET_STEP_LBS));
   }, []);
 
-  const valueA11y = `${targetMin} minutes`;
+  const valueA11y = `${targetLbs} pounds`;
 
   return (
     <View
@@ -46,7 +46,7 @@ export function TrainDailyTargetSection() {
         <Image
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={TRAIN_ACTION_CARD_BACKGROUND}
+          source={WEIGHT_ACTION_CARD_BACKGROUND}
           style={StyleSheet.absoluteFillObject}
           contentFit="fill"
         />
@@ -62,15 +62,15 @@ export function TrainDailyTargetSection() {
           <View style={styles.stepperRow}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Decrease daily training target"
-              accessibilityState={{ disabled: targetMin <= TARGET_MIN_MIN }}
+              accessibilityLabel="Decrease goal weight"
+              accessibilityState={{ disabled: targetLbs <= TARGET_MIN_LBS }}
               hitSlop={8}
-              disabled={targetMin <= TARGET_MIN_MIN}
+              disabled={targetLbs <= TARGET_MIN_LBS}
               onPress={decrease}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin <= TARGET_MIN_MIN && styles.stepperDisabled,
+                targetLbs <= TARGET_MIN_LBS && styles.stepperDisabled,
               ]}
             >
               <Image
@@ -92,22 +92,22 @@ export function TrainDailyTargetSection() {
                 style={styles.valueText}
               >
                 <Text style={[styles.valueNumber, { color: accentColor }]}>
-                  {targetMin}
+                  {targetLbs}
                 </Text>
-                <Text style={styles.valueSuffix}>M</Text>
+                <Text style={styles.valueSuffix}>LBS</Text>
               </Text>
             </View>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Increase daily training target"
-              accessibilityState={{ disabled: targetMin >= TARGET_MAX_MIN }}
+              accessibilityLabel="Increase goal weight"
+              accessibilityState={{ disabled: targetLbs >= TARGET_MAX_LBS }}
               hitSlop={8}
-              disabled={targetMin >= TARGET_MAX_MIN}
+              disabled={targetLbs >= TARGET_MAX_LBS}
               onPress={increase}
               style={({ pressed }) => [
                 styles.stepperColumn,
                 pressed && styles.stepperPressed,
-                targetMin >= TARGET_MAX_MIN && styles.stepperDisabled,
+                targetLbs >= TARGET_MAX_LBS && styles.stepperDisabled,
               ]}
             >
               <Image

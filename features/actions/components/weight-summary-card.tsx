@@ -6,10 +6,7 @@ import { ThemedText } from "@/components/themed-text";
 import { APP_SHELL_MAIN_TEXT_COLOR } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
-import {
-  ACTION_ROW_ACCENT_COLORS,
-  TRAIN_ACTION_CARD_ICON,
-} from "../constants";
+import { WEIGHT_ACTION_CARD_ICON } from "../constants";
 import {
   getActionRow,
   getActionRowBarSources,
@@ -18,24 +15,21 @@ import {
   getActionRowProgressPercent,
 } from "../data";
 
-const TRAIN_CARD_TITLE = "Today's progress";
+const WEIGHT_CARD_TITLE = "Today's progress";
 
-export function TrainSummaryCard() {
-  const trainRow = getActionRow("train");
-  const { current } = getActionRowProgressDisplay("train");
-  const barFillPercent = getActionRowFillPercent("train");
-  const progressPercent = getActionRowProgressPercent("train");
+export function WeightSummaryCard() {
+  const weightRow = getActionRow("weight");
+  const { current, accentColor } = getActionRowProgressDisplay("weight");
+  const barFillPercent = getActionRowFillPercent("weight");
+  const progressPercent = getActionRowProgressPercent("weight");
   const progressPercentLabel = `${Math.round(progressPercent)}%`;
-  const goalMin =
-    trainRow.progressRest.match(/\d+/)?.[0] ?? trainRow.progressCurrent;
-  const progressRest = ` / ${goalMin}M`;
+  const progressRest = weightRow.progressRest;
   const progressLabel = `${current}${progressRest}`;
-  const valueGrey = ACTION_ROW_ACCENT_COLORS.train;
 
   return (
     <View
       accessible
-      accessibilityLabel={`${TRAIN_CARD_TITLE}. ${progressLabel}. ${progressPercentLabel}`}
+      accessibilityLabel={`${WEIGHT_CARD_TITLE}. ${progressLabel}. ${progressPercentLabel}`}
       style={styles.section}
     >
       <ThemedText
@@ -43,14 +37,14 @@ export function TrainSummaryCard() {
         darkColor={APP_SHELL_MAIN_TEXT_COLOR}
         style={styles.title}
       >
-        {TRAIN_CARD_TITLE}
+        {WEIGHT_CARD_TITLE}
       </ThemedText>
       <View style={styles.bodyRow}>
         <Image
           accessibilityIgnoresInvertColors
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          source={TRAIN_ACTION_CARD_ICON}
+          source={WEIGHT_ACTION_CARD_ICON}
           style={styles.icon}
           contentFit="contain"
         />
@@ -62,16 +56,14 @@ export function TrainSummaryCard() {
             ellipsizeMode="tail"
             style={styles.valueText}
           >
-            <Text style={[styles.valueCurrent, { color: valueGrey }]}>
+            <Text style={[styles.valueCurrent, { color: accentColor }]}>
               {current}
             </Text>
-            <Text style={[styles.valueRest, { color: valueGrey }]}>
-              {progressRest}
-            </Text>
+            <Text style={styles.valueRest}>{progressRest}</Text>
           </Text>
           <View style={styles.barRow}>
             <ActionProgressBar
-              sources={getActionRowBarSources(trainRow)}
+              sources={getActionRowBarSources(weightRow)}
               fillPercent={barFillPercent}
               style={styles.progressBar}
             />
@@ -146,5 +138,6 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY,
     fontSize: 16,
     lineHeight: 20,
+    color: APP_SHELL_MAIN_TEXT_COLOR,
   },
 });

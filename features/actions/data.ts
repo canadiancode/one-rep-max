@@ -28,7 +28,7 @@ export const ACTION_ROWS_DAILY = [
     barFill: require("@/assets/bars/action-bar-grey.png"),
     barEnd: require("@/assets/bars/action-bar-grey-end.png"),
     progressCurrent: "60",
-    progressRest: " / 60 MIN",
+    progressRest: " / 60M",
   },
   {
     id: "sleep",
@@ -36,8 +36,8 @@ export const ACTION_ROWS_DAILY = [
     icon: require("@/assets/icons/purple-moon.png"),
     barFill: require("@/assets/bars/action-bar-purple.png"),
     barEnd: require("@/assets/bars/action-bar-purple-end.png"),
-    progressCurrent: "8h",
-    progressRest: " / 8h",
+    progressCurrent: "8H",
+    progressRest: " / 8H",
   },
   {
     id: "steps",

@@ -13,23 +13,21 @@ import { WATER_RIGHT_ARROW_ICON } from "../constants";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
-/** Y-axis tick step for the weekly training chart (minutes). */
-const TRAIN_WEEKLY_CHART_INCREMENT = 15;
+const CALORIES_WEEKLY_CHART_INCREMENT = 100;
 
-/** `true` = Y-axis from 0; `false` = Y-axis from data min (snapped to increment). */
-const TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
+const CALORIES_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
 
-/** Placeholder weekly series (training minutes); replace with DB/API fetch. */
-export const FAKE_TRAIN_WEEKLY_CHART_INPUTS = {
+/** Placeholder weekly series (active energy kcal); replace with DB/API fetch. */
+export const FAKE_CALORIES_WEEKLY_CHART_INPUTS = {
   userData: {
-    y: [45, 55, 40, 70, 50, 65, 60],
+    y: [720, 810, 760, 900, 820, 850, 800],
     x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
   },
-  targetVal: 60,
+  targetVal: 800,
   theme: "blue" as const,
 };
 
-export function TrainWeeklyHistorySection() {
+export function CaloriesWeeklyHistorySection() {
   return (
     <View accessible accessibilityLabel={SECTION_TITLE} style={styles.section}>
       <View style={styles.headerRow}>
@@ -71,13 +69,13 @@ export function TrainWeeklyHistorySection() {
         </Pressable>
       </View>
       <BarChart
-        increment={TRAIN_WEEKLY_CHART_INCREMENT}
-        targetLabelSuffix="M"
-        targetVal={FAKE_TRAIN_WEEKLY_CHART_INPUTS.targetVal}
-        theme={FAKE_TRAIN_WEEKLY_CHART_INPUTS.theme}
-        userData={FAKE_TRAIN_WEEKLY_CHART_INPUTS.userData}
-        yDomainFromZero={TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
-        accessibilityLabel="Training time, last seven days"
+        increment={CALORIES_WEEKLY_CHART_INCREMENT}
+        targetLabel={`${String(FAKE_CALORIES_WEEKLY_CHART_INPUTS.targetVal)} KCAL`}
+        targetVal={FAKE_CALORIES_WEEKLY_CHART_INPUTS.targetVal}
+        theme={FAKE_CALORIES_WEEKLY_CHART_INPUTS.theme}
+        userData={FAKE_CALORIES_WEEKLY_CHART_INPUTS.userData}
+        yDomainFromZero={CALORIES_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
+        accessibilityLabel="Calories burned, last seven days"
       />
     </View>
   );

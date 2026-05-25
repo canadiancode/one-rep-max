@@ -13,23 +13,23 @@ import { WATER_RIGHT_ARROW_ICON } from "../constants";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
-/** Y-axis tick step for the weekly training chart (minutes). */
-const TRAIN_WEEKLY_CHART_INCREMENT = 15;
+/** Y-axis tick step for the weekly steps chart. */
+const STEPS_WEEKLY_CHART_INCREMENT = 2_000;
 
 /** `true` = Y-axis from 0; `false` = Y-axis from data min (snapped to increment). */
-const TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
+const STEPS_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO = true;
 
-/** Placeholder weekly series (training minutes); replace with DB/API fetch. */
-export const FAKE_TRAIN_WEEKLY_CHART_INPUTS = {
+/** Placeholder weekly series (step counts); replace with DB/API fetch. */
+export const FAKE_STEPS_WEEKLY_CHART_INPUTS = {
   userData: {
-    y: [45, 55, 40, 70, 50, 65, 60],
+    y: [8_200, 9_500, 11_200, 10_400, 9_800, 12_000, 10_000],
     x: ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"],
   },
-  targetVal: 60,
+  targetVal: 10_000,
   theme: "blue" as const,
 };
 
-export function TrainWeeklyHistorySection() {
+export function StepsWeeklyHistorySection() {
   return (
     <View accessible accessibilityLabel={SECTION_TITLE} style={styles.section}>
       <View style={styles.headerRow}>
@@ -71,13 +71,13 @@ export function TrainWeeklyHistorySection() {
         </Pressable>
       </View>
       <BarChart
-        increment={TRAIN_WEEKLY_CHART_INCREMENT}
-        targetLabelSuffix="M"
-        targetVal={FAKE_TRAIN_WEEKLY_CHART_INPUTS.targetVal}
-        theme={FAKE_TRAIN_WEEKLY_CHART_INPUTS.theme}
-        userData={FAKE_TRAIN_WEEKLY_CHART_INPUTS.userData}
-        yDomainFromZero={TRAIN_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
-        accessibilityLabel="Training time, last seven days"
+        increment={STEPS_WEEKLY_CHART_INCREMENT}
+        targetLabel={`${FAKE_STEPS_WEEKLY_CHART_INPUTS.targetVal.toLocaleString("en-US")} STEPS`}
+        targetVal={FAKE_STEPS_WEEKLY_CHART_INPUTS.targetVal}
+        theme={FAKE_STEPS_WEEKLY_CHART_INPUTS.theme}
+        userData={FAKE_STEPS_WEEKLY_CHART_INPUTS.userData}
+        yDomainFromZero={STEPS_WEEKLY_CHART_Y_DOMAIN_FROM_ZERO}
+        accessibilityLabel="Steps, last seven days"
       />
     </View>
   );
