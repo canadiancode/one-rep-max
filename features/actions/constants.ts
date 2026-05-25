@@ -116,7 +116,16 @@ export const SLEEP_BULK_DURATION_OPTIONS = [
   { label: "+2H", minutes: 120 },
 ] as const;
 
-/** Decorative controls on the right of each action row (whole card is tappable). */
+/** Food detail: same blue shells as calories (kcal). */
+export const FOOD_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
+export const FOOD_ACTION_CARD_ICON = require("@/assets/icons/apple.png");
+
+/** Food detail: saved meals + recent meals list shells (blue square tile). */
+export const FOOD_SAVED_RECENT_MEALS_CARD_BACKGROUND =
+  WATER_ADD_CARD_BACKGROUND;
+
+/** Min height for the meal list region on saved / recent meal cards (keeps tile from looking vertically squashed). */
+export const FOOD_MEALS_LIST_AREA_MIN_HEIGHT = 200;
 export const ACTION_CARD_GEAR_ICON = require("@/assets/icons/alt-gear.png");
 export const ACTION_CARD_PLUS_ICON = require("@/assets/icons/plus-alt.png");
 

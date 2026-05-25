@@ -10,7 +10,7 @@ export const ACTION_ROWS_DAILY = [
     barFill: require("@/assets/bars/action-bar-red.png"),
     barEnd: require("@/assets/bars/action-bar-red-end.png"),
     progressCurrent: "2,500",
-    progressRest: "/2,500 KCAL",
+    progressRest: " / 2,500 KCAL",
   },
   {
     id: "water",
