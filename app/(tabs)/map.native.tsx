@@ -51,7 +51,7 @@ const HARDCODED_GYMS: readonly HardcodedGym[] = [
   },
   {
     id: "gym-3",
-    name: "Evolve Strength Post (Vancouver)",
+    name: "Evolve Strength Post",
     latitude: 49.280815399999994,
     longitude: -123.11450789999999,
   },
@@ -533,6 +533,8 @@ const DEFAULT_GYM_CARD_IMAGE = require("@/assets/backgrounds/map-gym-default-bac
 const USER_ICON_MAP_CARD = require("@/assets/icons/user.png");
 const USER_CAR_ICON = require("@/assets/icons/car.png");
 const LOCATE_ME_ICON = require("@/assets/icons/locate-me.png");
+/** Popup card behind gym name, hero image, distance, etc. */
+const MAP_GYM_SHEET_CARD_BACKGROUND = require("@/assets/backgrounds/blue-square-card.png");
 
 const LOCATE_FAB_SIZE = 48;
 const LOCATE_ICON_SIZE = 24;
@@ -795,74 +797,83 @@ export default function MapScreen() {
               accessibilityLabel={`${selectedGym.name} details`}
               style={[styles.sheetCard, { height: sheetHeight }]}
             >
-              <View style={styles.sheetInner}>
-                <Image
-                  source={gymCardHeroSource(selectedGym)}
-                  style={styles.sheetHeroImage}
-                  contentFit="cover"
-                  accessibilityIgnoresInvertColors
-                />
-                <View style={styles.sheetBottomBlock}>
-                  <ThemedText
-                    type="title"
-                    lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                    darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                    style={styles.sheetGymName}
-                    numberOfLines={2}
-                  >
-                    {selectedGym.name}
-                  </ThemedText>
-                  <View style={styles.sheetFooterMeta}>
-                    <View style={styles.sheetFooterLeft}>
-                      <Image
-                        source={USER_ICON_MAP_CARD}
-                        style={styles.sheetUserIcon}
-                        contentFit="contain"
-                      />
-                      <ThemedText
-                        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                        style={styles.sheetChatterCount}
-                      >
-                        8
-                      </ThemedText>
-                    </View>
-                    {userLocationVisible && driveEta ? (
-                      <View style={styles.sheetDriveRow}>
+              <Image
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                source={MAP_GYM_SHEET_CARD_BACKGROUND}
+                style={styles.sheetCardBackground}
+                contentFit="fill"
+              />
+              <View style={styles.sheetCardForeground}>
+                <View style={styles.sheetInner}>
+                  <Image
+                    source={gymCardHeroSource(selectedGym)}
+                    style={styles.sheetHeroImage}
+                    contentFit="cover"
+                    accessibilityIgnoresInvertColors
+                  />
+                  <View style={styles.sheetBottomBlock}>
+                    <ThemedText
+                      type="title"
+                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                      style={styles.sheetGymName}
+                      numberOfLines={2}
+                    >
+                      {selectedGym.name}
+                    </ThemedText>
+                    <View style={styles.sheetFooterMeta}>
+                      <View style={styles.sheetFooterLeft}>
                         <Image
-                          source={USER_CAR_ICON}
-                          style={styles.sheetCarIcon}
+                          source={USER_ICON_MAP_CARD}
+                          style={styles.sheetUserIcon}
                           contentFit="contain"
                         />
-                        <View style={styles.sheetDriveMetrics}>
-                          <ThemedText
-                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            style={styles.sheetDriveText}
-                            numberOfLines={1}
-                          >
-                            {driveEta.km.toFixed(1)}km
-                          </ThemedText>
-                          <ThemedText
-                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            style={styles.sheetDriveSep}
-                            accessibilityElementsHidden
-                            importantForAccessibility="no"
-                          >
-                            ·
-                          </ThemedText>
-                          <ThemedText
-                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                            style={styles.sheetDriveText}
-                            numberOfLines={1}
-                          >
-                            {formatDriveDurationMinutes(driveEta.minutes)}
-                          </ThemedText>
-                        </View>
+                        <ThemedText
+                          lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                          darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                          style={styles.sheetChatterCount}
+                        >
+                          8
+                        </ThemedText>
                       </View>
-                    ) : null}
+                      {userLocationVisible && driveEta ? (
+                        <View style={styles.sheetDriveRow}>
+                          <Image
+                            source={USER_CAR_ICON}
+                            style={styles.sheetCarIcon}
+                            contentFit="contain"
+                          />
+                          <View style={styles.sheetDriveMetrics}>
+                            <ThemedText
+                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              style={styles.sheetDriveText}
+                              numberOfLines={1}
+                            >
+                              {driveEta.km.toFixed(1)}km
+                            </ThemedText>
+                            <ThemedText
+                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              style={styles.sheetDriveSep}
+                              accessibilityElementsHidden
+                              importantForAccessibility="no"
+                            >
+                              ·
+                            </ThemedText>
+                            <ThemedText
+                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                              style={styles.sheetDriveText}
+                              numberOfLines={1}
+                            >
+                              {formatDriveDurationMinutes(driveEta.minutes)}
+                            </ThemedText>
+                          </View>
+                        </View>
+                      ) : null}
+                    </View>
                   </View>
                 </View>
               </View>
@@ -928,12 +939,20 @@ const styles = StyleSheet.create({
   },
   sheetCard: {
     flexDirection: "column",
-    backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
     borderRadius: 14,
-    borderWidth: 2,
-    borderColor: APP_SHELL_PRIMARY_BACKGROUND,
+    overflow: "hidden",
+  },
+  sheetCardBackground: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  sheetCardForeground: {
+    flex: 1,
+    flexDirection: "column",
+    minHeight: 0,
     paddingHorizontal: 12,
-    paddingVertical: 12,
+    paddingTop: 12,
+    /** Slightly more than top so title / footer breathe above the card edge. */
+    paddingBottom: 18,
   },
   sheetInner: {
     flex: 1,
@@ -953,8 +972,11 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 0,
     justifyContent: "flex-end",
-    gap: 8,
-    paddingTop: 4,
+    gap: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   sheetGymName: {
     textAlign: "left",
@@ -971,7 +993,10 @@ const styles = StyleSheet.create({
   sheetFooterLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 10,
+    flexShrink: 1,
+    minWidth: 0,
+    marginInlineEnd: 8,
   },
   sheetDriveRow: {
     flexDirection: "row",
