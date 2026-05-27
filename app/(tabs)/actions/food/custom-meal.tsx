@@ -1,0 +1,278 @@
+import { Image } from "expo-image";
+import { useState } from "react";
+import { Keyboard, Platform, StyleSheet, TextInput, View } from "react-native";
+
+import { ThemedText } from "@/components/themed-text";
+import {
+  APP_SHELL_INPUT_PLACEHOLDER_COLOR,
+  APP_SHELL_LABEL_COLOR,
+  APP_SHELL_MAIN_TEXT_COLOR,
+} from "@/constants/app-colors";
+import { FONT_FAMILY } from "@/constants/fonts";
+import { ActionsSubScreenLayout } from "@/features/actions/components/actions-sub-screen-layout";
+import { FoodLimePillButton } from "@/features/actions/components/food-lime-pill-button";
+
+const BG_LONG = require("@/assets/backgrounds/text-input-long.png");
+const BG_MED = require("@/assets/backgrounds/text-input-med.png");
+const BG_SMALL = require("@/assets/backgrounds/text-input-small.png");
+
+/** Pill widths vs. full content width (meal name = 100%). Matches layout reference art. */
+const MEAL_CALORIES_INPUT_WIDTH = "55%";
+/** Gram macros (protein, carbs, fat): same small pill asset and width. */
+const MEAL_GRAM_MACRO_INPUT_WIDTH = "35%";
+
+const INPUT_ROW_PLATFORM = Platform.select({
+  android: {
+    includeFontPadding: false,
+    textAlignVertical: "center" as const,
+  },
+  default: {},
+});
+
+export default function FoodCustomMealScreen() {
+  const [mealName, setMealName] = useState("");
+  const [mealCalories, setMealCalories] = useState("");
+  const [mealProtein, setMealProtein] = useState("");
+  const [mealCarbs, setMealCarbs] = useState("");
+  const [mealFat, setMealFat] = useState("");
+
+  const gramMacroFields = [
+    {
+      key: "protein",
+      label: "Meal protein",
+      value: mealProtein,
+      onChangeText: setMealProtein,
+      placeholder: "50",
+      accessibilityLabel: "Meal protein, grams",
+    },
+    {
+      key: "carbs",
+      label: "Meal carbs",
+      value: mealCarbs,
+      onChangeText: setMealCarbs,
+      placeholder: "53",
+      accessibilityLabel: "Meal carbs, grams",
+    },
+    {
+      key: "fat",
+      label: "Meal fat",
+      value: mealFat,
+      onChangeText: setMealFat,
+      placeholder: "9",
+      accessibilityLabel: "Meal fat, grams",
+    },
+  ] as const;
+
+  return (
+    <ActionsSubScreenLayout>
+      <View style={styles.form}>
+        <View style={styles.field}>
+          <ThemedText
+            lightColor={APP_SHELL_LABEL_COLOR}
+            darkColor={APP_SHELL_LABEL_COLOR}
+            style={styles.label}
+          >
+            Meal name
+          </ThemedText>
+          <View style={[styles.inputShell, styles.inputShellUniformHeight]}>
+            <Image
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              source={BG_LONG}
+              style={StyleSheet.absoluteFillObject}
+              contentFit="fill"
+            />
+            <TextInput
+              accessibilityLabel="Meal name"
+              value={mealName}
+              onChangeText={setMealName}
+              placeholder="Chicken wrap"
+              placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
+              style={[
+                styles.input,
+                styles.inputUniformHeight,
+                styles.inputLong,
+              ]}
+              autoCapitalize="sentences"
+              autoCorrect
+              underlineColorAndroid="transparent"
+              {...INPUT_ROW_PLATFORM}
+            />
+          </View>
+        </View>
+
+        <View style={styles.field}>
+          <ThemedText
+            lightColor={APP_SHELL_LABEL_COLOR}
+            darkColor={APP_SHELL_LABEL_COLOR}
+            style={styles.label}
+          >
+            Meal calories
+          </ThemedText>
+          <View style={styles.inputWithSuffix}>
+            <View
+              style={[
+                styles.inputShell,
+                styles.inputShellUniformHeight,
+                { width: MEAL_CALORIES_INPUT_WIDTH },
+              ]}
+            >
+              <Image
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                source={BG_MED}
+                style={StyleSheet.absoluteFillObject}
+                contentFit="fill"
+              />
+              <TextInput
+                accessibilityLabel="Meal calories"
+                value={mealCalories}
+                onChangeText={setMealCalories}
+                placeholder="500"
+                placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
+                style={[
+                  styles.input,
+                  styles.inputUniformHeight,
+                  styles.inputMed,
+                ]}
+                keyboardType="number-pad"
+                underlineColorAndroid="transparent"
+                {...INPUT_ROW_PLATFORM}
+              />
+            </View>
+            <ThemedText
+              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+              style={styles.suffix}
+              accessibilityElementsHidden
+            >
+              KCAL
+            </ThemedText>
+          </View>
+        </View>
+
+        {gramMacroFields.map((row) => (
+          <View key={row.key} style={styles.field}>
+            <ThemedText
+              lightColor={APP_SHELL_LABEL_COLOR}
+              darkColor={APP_SHELL_LABEL_COLOR}
+              style={styles.label}
+            >
+              {row.label}
+            </ThemedText>
+            <View style={styles.inputWithSuffix}>
+              <View
+                style={[
+                  styles.inputShell,
+                  styles.inputShellUniformHeight,
+                  { width: MEAL_GRAM_MACRO_INPUT_WIDTH },
+                ]}
+              >
+                <Image
+                  accessibilityElementsHidden
+                  importantForAccessibility="no-hide-descendants"
+                  source={BG_SMALL}
+                  style={StyleSheet.absoluteFillObject}
+                  contentFit="fill"
+                />
+                <TextInput
+                  accessibilityLabel={row.accessibilityLabel}
+                  value={row.value}
+                  onChangeText={row.onChangeText}
+                  placeholder={row.placeholder}
+                  placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
+                  style={[
+                    styles.input,
+                    styles.inputUniformHeight,
+                    styles.inputSmall,
+                  ]}
+                  keyboardType="decimal-pad"
+                  underlineColorAndroid="transparent"
+                  {...INPUT_ROW_PLATFORM}
+                />
+              </View>
+              <ThemedText
+                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                style={styles.suffix}
+                accessibilityElementsHidden
+              >
+                G
+              </ThemedText>
+            </View>
+          </View>
+        ))}
+
+        <FoodLimePillButton
+          title="+ add meal"
+          accessibilityLabel="Add custom meal"
+          onPress={() => {
+            Keyboard.dismiss();
+            // TODO: persist meal from mealName, mealCalories, mealProtein, mealCarbs, mealFat
+          }}
+        />
+      </View>
+    </ActionsSubScreenLayout>
+  );
+}
+
+const styles = StyleSheet.create({
+  form: {
+    alignSelf: "stretch",
+    gap: 20,
+  },
+  field: {
+    alignSelf: "stretch",
+    gap: 8,
+  },
+  label: {
+    fontFamily: FONT_FAMILY,
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: "600",
+  },
+  inputShell: {
+    alignSelf: "stretch",
+    borderRadius: 12,
+    overflow: "hidden",
+    justifyContent: "center",
+  },
+  inputShellUniformHeight: {
+    height: 52,
+  },
+  inputWithSuffix: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 1,
+    alignSelf: "flex-start",
+  },
+  input: {
+    width: "100%",
+    fontFamily: FONT_FAMILY,
+    fontSize: 15,
+    color: APP_SHELL_MAIN_TEXT_COLOR,
+    backgroundColor: "transparent",
+    paddingVertical: 0,
+  },
+  inputUniformHeight: {
+    height: 52,
+  },
+  inputLong: {
+    paddingHorizontal: 18,
+  },
+  inputMed: {
+    paddingLeft: 16,
+    paddingRight: 14,
+  },
+  inputSmall: {
+    paddingLeft: 14,
+    paddingRight: 12,
+  },
+  suffix: {
+    fontFamily: FONT_FAMILY,
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: "700",
+    flexShrink: 0,
+  },
+});

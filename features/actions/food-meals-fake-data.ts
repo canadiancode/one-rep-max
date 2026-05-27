@@ -41,6 +41,23 @@ const FAKE_MEAL_ROWS: readonly FoodMealFakeItem[] = [
     carbs: 38,
     protein: 14,
   },
+  {
+    name: "Pepperoni Pizza (2 slices)",
+    vendor: "Domino's",
+    portionSize: "2 slices",
+    calories: 560,
+    fat: 24,
+    carbs: 56,
+    protein: 24,
+  },
+  {
+    name: "Greek Yogurt with Berries",
+    portionSize: "1 cup",
+    calories: 220,
+    fat: 4,
+    carbs: 28,
+    protein: 18,
+  },
 ] as const;
 
 /** Saved-meals list seed data (same catalog as recent for now). */

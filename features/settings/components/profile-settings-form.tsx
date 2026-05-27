@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Switch, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Switch, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import {
@@ -8,7 +8,10 @@ import {
   APP_SHELL_LABEL_COLOR,
   APP_SHELL_MAIN_TEXT_COLOR,
 } from "@/constants/app-colors";
-import { FONT_FAMILY } from "@/constants/fonts";
+import {
+  SettingsBioTextField,
+  SettingsSingleLineTextField,
+} from "@/features/settings/components/settings-text-field";
 
 export function ProfileSettingsForm() {
   const [displayName, setDisplayName] = useState("");
@@ -25,13 +28,11 @@ export function ProfileSettingsForm() {
         >
           Display name
         </ThemedText>
-        <TextInput
+        <SettingsSingleLineTextField
           accessibilityLabel="Display name"
           value={displayName}
           onChangeText={setDisplayName}
           placeholder="Fit Pixel"
-          placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
-          style={styles.singleLineInput}
           autoCapitalize="words"
           autoCorrect
           maxLength={80}
@@ -46,15 +47,11 @@ export function ProfileSettingsForm() {
         >
           Bio
         </ThemedText>
-        <TextInput
+        <SettingsBioTextField
           accessibilityLabel="Bio"
           value={bio}
           onChangeText={setBio}
           placeholder="Just a pixel getting fit"
-          placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
-          style={styles.multilineInput}
-          multiline
-          textAlignVertical="top"
           maxLength={500}
         />
       </View>
@@ -123,29 +120,6 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 12,
     lineHeight: 16,
-  },
-  singleLineInput: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: APP_SHELL_INPUT_BOARDER_COLOR,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 11,
-    color: APP_SHELL_MAIN_TEXT_COLOR,
-    fontFamily: FONT_FAMILY,
-    fontSize: 14,
-    lineHeight: 18,
-  },
-  multilineInput: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: APP_SHELL_INPUT_BOARDER_COLOR,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 11,
-    color: APP_SHELL_MAIN_TEXT_COLOR,
-    fontFamily: FONT_FAMILY,
-    fontSize: 14,
-    lineHeight: 20,
-    minHeight: 120,
   },
   selectorButton: {
     borderWidth: StyleSheet.hairlineWidth,

@@ -1,4 +1,5 @@
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { BarChart } from "@/components/charts/bar-chart";
@@ -10,13 +11,14 @@ import {
 import { FONT_FAMILY } from "@/constants/fonts";
 
 import { WATER_RIGHT_ARROW_ICON } from "../constants";
+import { FOOD_ACTION_HREFS } from "../food-routes";
 
 const SECTION_TITLE = "History";
 const VIEW_HISTORY_LABEL = "View history";
 /** Y-axis tick step for the last-seven-days food chart (kcal per day). */
-const FOOD_DAILY_CHART_INCREMENT = 500;
+export const FOOD_DAILY_CHART_INCREMENT = 500;
 
-const FOOD_DAILY_CHART_Y_DOMAIN_FROM_ZERO = true;
+export const FOOD_DAILY_CHART_Y_DOMAIN_FROM_ZERO = true;
 
 /** Placeholder daily series (kcal per day, Mon–Sun); replace with DB/API fetch. */
 export const FAKE_FOOD_DAILY_CHART_INPUTS = {
@@ -45,6 +47,7 @@ export function FoodDailyHistorySection() {
           accessibilityRole="button"
           accessibilityLabel={VIEW_HISTORY_LABEL}
           hitSlop={8}
+          onPress={() => router.push(FOOD_ACTION_HREFS.caloricIntakeHistory)}
           style={({ pressed }) => [
             styles.viewHistoryControl,
             pressed && styles.viewHistoryPressed,

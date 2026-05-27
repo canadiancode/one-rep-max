@@ -120,12 +120,24 @@ export const SLEEP_BULK_DURATION_OPTIONS = [
 export const FOOD_ACTION_CARD_BACKGROUND = WATER_ACTION_CARD_BACKGROUND;
 export const FOOD_ACTION_CARD_ICON = require("@/assets/icons/apple.png");
 
-/** Food detail: saved meals + recent meals list shells (blue square tile). */
-export const FOOD_SAVED_RECENT_MEALS_CARD_BACKGROUND =
-  WATER_ADD_CARD_BACKGROUND;
+/** Food detail: saved meals + recent meals list shells (large blue square tile). */
+export const FOOD_SAVED_RECENT_MEALS_CARD_BACKGROUND = require("@/assets/backgrounds/blue-large-square-card.png");
 
 /** Min height for the meal list region on saved / recent meal cards (keeps tile from looking vertically squashed). */
 export const FOOD_MEALS_LIST_AREA_MIN_HEIGHT = 200;
+
+/** Food detail: meal row control — log this meal to eaten for the day. */
+export const FOOD_QUICK_ADD_MEAL_BUTTON = require("@/assets/backgrounds/quick-add-food.png");
+
+/** Decorative heart shown under the quick-add control on saved / recent meal rows. */
+export const FOOD_MEAL_ROW_HEART_ICON = require("@/assets/icons/small-heart.png");
+
+/** Food detail: wide action strip (`add-action.png`; same asset as other action “add” confirms). */
+export const FOOD_ADD_ACTION_BUTTON_BACKGROUND = WATER_ADD_WATER_BUTTON_BACKGROUND;
+/** Same background as search — custom meal + barcode match for one consistent control look. */
+export const FOOD_CUSTOM_MEAL_BUTTON_BACKGROUND = FOOD_ADD_ACTION_BUTTON_BACKGROUND;
+export const FOOD_BARCODE_SCANNER_BUTTON_BACKGROUND = FOOD_ADD_ACTION_BUTTON_BACKGROUND;
+
 export const ACTION_CARD_GEAR_ICON = require("@/assets/icons/alt-gear.png");
 export const ACTION_CARD_PLUS_ICON = require("@/assets/icons/plus-alt.png");
 

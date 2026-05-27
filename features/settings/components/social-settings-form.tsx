@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
-import {
-  APP_SHELL_INPUT_BOARDER_COLOR,
-  APP_SHELL_INPUT_PLACEHOLDER_COLOR,
-  APP_SHELL_LABEL_COLOR,
-  APP_SHELL_MAIN_TEXT_COLOR,
-} from "@/constants/app-colors";
-import { FONT_FAMILY } from "@/constants/fonts";
+import { APP_SHELL_LABEL_COLOR } from "@/constants/app-colors";
+import { SettingsSingleLineTextField } from "@/features/settings/components/settings-text-field";
 
 export function SocialSettingsForm() {
   const [instagram, setInstagram] = useState("");
@@ -25,13 +20,11 @@ export function SocialSettingsForm() {
         >
           Instagram
         </ThemedText>
-        <TextInput
+        <SettingsSingleLineTextField
           accessibilityLabel="Instagram profile or link"
           value={instagram}
           onChangeText={setInstagram}
           placeholder="@yourhandle or profile link"
-          placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
-          style={styles.singleLineInput}
           autoCapitalize="none"
           autoCorrect={false}
           maxLength={200}
@@ -46,13 +39,11 @@ export function SocialSettingsForm() {
         >
           TikTok
         </ThemedText>
-        <TextInput
+        <SettingsSingleLineTextField
           accessibilityLabel="TikTok profile or link"
           value={tiktok}
           onChangeText={setTiktok}
           placeholder="@yourhandle or profile link"
-          placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
-          style={styles.singleLineInput}
           autoCapitalize="none"
           autoCorrect={false}
           maxLength={200}
@@ -67,13 +58,11 @@ export function SocialSettingsForm() {
         >
           YouTube
         </ThemedText>
-        <TextInput
+        <SettingsSingleLineTextField
           accessibilityLabel="YouTube channel or link"
           value={youtube}
           onChangeText={setYoutube}
           placeholder="@yourhandle or channel link"
-          placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
-          style={styles.singleLineInput}
           autoCapitalize="none"
           autoCorrect={false}
           maxLength={200}
@@ -94,16 +83,5 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 12,
     lineHeight: 16,
-  },
-  singleLineInput: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: APP_SHELL_INPUT_BOARDER_COLOR,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 11,
-    color: APP_SHELL_MAIN_TEXT_COLOR,
-    fontFamily: FONT_FAMILY,
-    fontSize: 14,
-    lineHeight: 18,
   },
 });
