@@ -6,7 +6,10 @@ import {
   APP_SHELL_PRIMARY_BACKGROUND,
   APP_SHELL_SECONDARY_BACKGROUND,
 } from "@/constants/app-colors";
-import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
+import {
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+  TAB_SCREEN_STACK_CHROME_LAYOUT,
+} from "@/constants/app-shell";
 import { SettingsHeader } from "@/features/settings/components/settings-header";
 
 /** Keeps stack base as `index` so pushes to child routes resolve (see Expo Router settings). */
@@ -44,10 +47,7 @@ const styles = StyleSheet.create({
     ...TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
   },
   stackChrome: {
-    flex: 1,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    overflow: "hidden",
+    ...TAB_SCREEN_STACK_CHROME_LAYOUT,
     backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
   },
 });

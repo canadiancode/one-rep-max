@@ -15,7 +15,7 @@ import {
   getActionRowProgressPercent,
 } from "../data";
 
-const WEIGHT_CARD_TITLE = "Today's progress";
+const WEIGHT_CARD_TITLE = "Your progress";
 
 export function WeightSummaryCard() {
   const weightRow = getActionRow("weight");

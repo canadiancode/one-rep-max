@@ -10,21 +10,20 @@ import {
   TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
   TAB_SCREEN_STACK_CHROME_LAYOUT,
 } from "@/constants/app-shell";
-import { ActionsHeader } from "@/features/actions/components/actions-header";
+import { ChatHeader } from "@/features/chat/components/chat-header";
 
-/** Keeps stack base as `index` so pushes to child routes resolve (see Expo Router settings). */
 export const unstable_settings = {
   initialRouteName: "index",
 };
 
-export default function ActionsLayout() {
+export default function ChatLayout() {
   return (
     <ThemedView
       lightColor={APP_SHELL_PRIMARY_BACKGROUND}
       darkColor={APP_SHELL_PRIMARY_BACKGROUND}
       style={styles.screenRoot}
     >
-      <ActionsHeader />
+      <ChatHeader />
       <View style={styles.stackChrome}>
         <Stack
           screenOptions={{

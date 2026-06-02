@@ -7,6 +7,11 @@ import {
   APP_SHELL_PRIMARY_BACKGROUND,
 } from "@/constants/app-colors";
 
+import {
+  TAB_HEADER_CONTENT_HEIGHT,
+  TAB_HEADER_ROW_LAYOUT,
+} from "@/constants/app-shell";
+
 import { DISPLAY_NAME, PIXEL_IMAGE } from "../constants";
 
 export function SettingsHeader() {
@@ -34,14 +39,11 @@ export function SettingsHeader() {
 
 const styles = StyleSheet.create({
   headerRow: {
+    ...TAB_HEADER_ROW_LAYOUT,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     gap: 12,
-    minHeight: 96,
-    paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 14,
     backgroundColor: APP_SHELL_PRIMARY_BACKGROUND,
   },
   displayName: {
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   pixelImage: {
-    width: 80,
-    height: 80,
+    width: TAB_HEADER_CONTENT_HEIGHT,
+    height: TAB_HEADER_CONTENT_HEIGHT,
   },
 });

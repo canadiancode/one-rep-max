@@ -1,11 +1,26 @@
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import {
+  APP_SHELL_MAIN_TEXT_COLOR,
+  APP_SHELL_PRIMARY_BACKGROUND,
+  APP_SHELL_SECONDARY_BACKGROUND,
+} from "@/constants/app-colors";
+import {
+  TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+  TAB_SCREEN_STACK_CHROME_LAYOUT,
+} from "@/constants/app-shell";
+import { FIT_PIXEL_GOOGLE_MAP_STYLE } from "@/constants/google-map-style";
+import { MapHeader } from "@/features/map/components/map-header";
 import { Image } from "expo-image";
 import * as Location from "expo-location";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   type ImageSourcePropType,
+  Keyboard,
   Platform,
   Pressable,
   StyleSheet,
+  type TextInput,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -14,17 +29,6 @@ import MapView, {
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
 } from "react-native-maps";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import {
-  APP_SHELL_MAIN_TEXT_COLOR,
-  APP_SHELL_PRIMARY_BACKGROUND,
-  APP_SHELL_SECONDARY_BACKGROUND,
-} from "@/constants/app-colors";
-import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
-import { FIT_PIXEL_GOOGLE_MAP_STYLE } from "@/constants/google-map-style";
 
 /** Static gym pins; replace with API/DB later. */
 type HardcodedGym = {
@@ -539,7 +543,7 @@ const MAP_GYM_SHEET_CARD_BACKGROUND = require("@/assets/backgrounds/blue-square-
 const LOCATE_FAB_SIZE = 48;
 const LOCATE_ICON_SIZE = 24;
 /** Extra space below the status bar / notch; increase to move the locate FAB down. */
-const LOCATE_FAB_TOP_OFFSET = 45;
+const LOCATE_FAB_TOP_OFFSET = 25;
 /** Inset from the trailing screen edge (right in LTR); increase to move the locate FAB inward. */
 const LOCATE_FAB_RIGHT_OFFSET = 25;
 /** Zoom span when centering on the user from the locate FAB. */
@@ -599,13 +603,13 @@ const FOCUS_ANIMATION_MS = 650;
 
 export default function MapScreen() {
   const mapRef = useRef<InstanceType<typeof MapView>>(null);
+  const gymFilterInputRef = useRef<TextInput>(null);
   const [selectedGym, setSelectedGym] = useState<HardcodedGym | null>(null);
   const [userLocationVisible, setUserLocationVisible] = useState(false);
   const [userCoords, setUserCoords] = useState<LatLng | null>(null);
   /** Map `onPress` often fires after a marker tap (esp. Android); skip one clear. */
   const skipNextMapDismiss = useRef(false);
   const { height: windowHeight } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const sheetHeight = Math.max(260, Math.round(windowHeight * 0.3));
 
   useEffect(() => {
@@ -678,8 +682,14 @@ export default function MapScreen() {
     );
   }, []);
 
+  const dismissGymFilterKeyboard = useCallback(() => {
+    gymFilterInputRef.current?.blur();
+    Keyboard.dismiss();
+  }, []);
+
   const handleSelectGym = useCallback(
     (gym: HardcodedGym) => {
+      dismissGymFilterKeyboard();
       skipNextMapDismiss.current = true;
       setSelectedGym(gym);
       focusGym(gym);
@@ -687,16 +697,21 @@ export default function MapScreen() {
         skipNextMapDismiss.current = false;
       }, 400);
     },
-    [focusGym],
+    [dismissGymFilterKeyboard, focusGym],
   );
 
   const handleMapPress = useCallback(() => {
+    dismissGymFilterKeyboard();
     if (skipNextMapDismiss.current) {
       skipNextMapDismiss.current = false;
       return;
     }
     setSelectedGym(null);
-  }, []);
+  }, [dismissGymFilterKeyboard]);
+
+  const handleMapPanDrag = useCallback(() => {
+    dismissGymFilterKeyboard();
+  }, [dismissGymFilterKeyboard]);
 
   const handleLocateMePress = useCallback(async () => {
     const { status } = await Location.getForegroundPermissionsAsync();
@@ -730,165 +745,180 @@ export default function MapScreen() {
   }, []);
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.mapStack}>
-        <MapView
-          ref={mapRef}
-          provider={
-            Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
-          }
-          customMapStyle={
-            Platform.OS === "android"
-              ? [...FIT_PIXEL_GOOGLE_MAP_STYLE]
-              : undefined
-          }
-          style={styles.map}
-          initialRegion={INITIAL_REGION}
-          showsUserLocation={userLocationVisible}
-          showsMyLocationButton={false}
-          onPress={handleMapPress}
-        >
-          {HARDCODED_GYMS.map((gym) => (
-            <Marker
-              key={gym.id}
-              coordinate={{ latitude: gym.latitude, longitude: gym.longitude }}
-              image={GYM_MARKER_IMAGE}
-              anchor={{ x: 0.5, y: 1 }}
-              tracksViewChanges={false}
-              accessibilityLabel={gym.name}
-              onPress={() => handleSelectGym(gym)}
-            />
-          ))}
-        </MapView>
-
-        <View
-          collapsable={false}
-          style={[
-            styles.locateFabOverlay,
-            {
-              paddingTop: insets.top + LOCATE_FAB_TOP_OFFSET,
-              paddingEnd: LOCATE_FAB_RIGHT_OFFSET,
-            },
-          ]}
-          pointerEvents="box-none"
-        >
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Center map on my location"
-            onPress={handleLocateMePress}
-            style={({ pressed }) =>
-              pressed ? styles.locateFabPressed : undefined
+    <ThemedView
+      lightColor={APP_SHELL_PRIMARY_BACKGROUND}
+      darkColor={APP_SHELL_PRIMARY_BACKGROUND}
+      style={styles.screenRoot}
+    >
+      <MapHeader ref={gymFilterInputRef} />
+      <View style={styles.mapChrome}>
+        <View style={styles.mapStack}>
+          <MapView
+            ref={mapRef}
+            provider={
+              Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
             }
+            customMapStyle={
+              Platform.OS === "android"
+                ? [...FIT_PIXEL_GOOGLE_MAP_STYLE]
+                : undefined
+            }
+            style={styles.map}
+            initialRegion={INITIAL_REGION}
+            showsUserLocation={userLocationVisible}
+            showsMyLocationButton={false}
+            onPress={handleMapPress}
+            onPanDrag={handleMapPanDrag}
           >
-            <View style={styles.locateFabDisk} collapsable={false}>
-              <Image
-                source={LOCATE_ME_ICON}
-                style={styles.locateFabIcon}
-                contentFit="contain"
-                accessibilityIgnoresInvertColors
+            {HARDCODED_GYMS.map((gym) => (
+              <Marker
+                key={gym.id}
+                coordinate={{
+                  latitude: gym.latitude,
+                  longitude: gym.longitude,
+                }}
+                image={GYM_MARKER_IMAGE}
+                anchor={{ x: 0.5, y: 1 }}
+                tracksViewChanges={false}
+                accessibilityLabel={gym.name}
+                onPress={() => handleSelectGym(gym)}
               />
-            </View>
-          </Pressable>
-        </View>
+            ))}
+          </MapView>
 
-        {selectedGym ? (
-          <View style={styles.sheetOverlay} pointerEvents="box-none">
-            <View
-              accessibilityLabel={`${selectedGym.name} details`}
-              style={[styles.sheetCard, { height: sheetHeight }]}
+          <View
+            collapsable={false}
+            style={[
+              styles.locateFabOverlay,
+              {
+                paddingTop: LOCATE_FAB_TOP_OFFSET,
+                paddingEnd: LOCATE_FAB_RIGHT_OFFSET,
+              },
+            ]}
+            pointerEvents="box-none"
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Center map on my location"
+              onPress={handleLocateMePress}
+              style={({ pressed }) =>
+                pressed ? styles.locateFabPressed : undefined
+              }
             >
-              <Image
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-                source={MAP_GYM_SHEET_CARD_BACKGROUND}
-                style={styles.sheetCardBackground}
-                contentFit="fill"
-              />
-              <View style={styles.sheetCardForeground}>
-                <View style={styles.sheetInner}>
-                  <Image
-                    source={gymCardHeroSource(selectedGym)}
-                    style={styles.sheetHeroImage}
-                    contentFit="cover"
-                    accessibilityIgnoresInvertColors
-                  />
-                  <View style={styles.sheetBottomBlock}>
-                    <ThemedText
-                      type="title"
-                      lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                      darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                      style={styles.sheetGymName}
-                      numberOfLines={2}
-                    >
-                      {selectedGym.name}
-                    </ThemedText>
-                    <View style={styles.sheetFooterMeta}>
-                      <View style={styles.sheetFooterLeft}>
-                        <Image
-                          source={USER_ICON_MAP_CARD}
-                          style={styles.sheetUserIcon}
-                          contentFit="contain"
-                        />
-                        <ThemedText
-                          lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                          darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                          style={styles.sheetChatterCount}
-                        >
-                          8
-                        </ThemedText>
-                      </View>
-                      {userLocationVisible && driveEta ? (
-                        <View style={styles.sheetDriveRow}>
+              <View style={styles.locateFabDisk} collapsable={false}>
+                <Image
+                  source={LOCATE_ME_ICON}
+                  style={styles.locateFabIcon}
+                  contentFit="contain"
+                  accessibilityIgnoresInvertColors
+                />
+              </View>
+            </Pressable>
+          </View>
+
+          {selectedGym ? (
+            <View style={styles.sheetOverlay} pointerEvents="box-none">
+              <View
+                accessibilityLabel={`${selectedGym.name} details`}
+                style={[styles.sheetCard, { height: sheetHeight }]}
+              >
+                <Image
+                  accessibilityElementsHidden
+                  importantForAccessibility="no-hide-descendants"
+                  source={MAP_GYM_SHEET_CARD_BACKGROUND}
+                  style={styles.sheetCardBackground}
+                  contentFit="fill"
+                />
+                <View style={styles.sheetCardForeground}>
+                  <View style={styles.sheetInner}>
+                    <Image
+                      source={gymCardHeroSource(selectedGym)}
+                      style={styles.sheetHeroImage}
+                      contentFit="cover"
+                      accessibilityIgnoresInvertColors
+                    />
+                    <View style={styles.sheetBottomBlock}>
+                      <ThemedText
+                        type="title"
+                        lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                        darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                        style={styles.sheetGymName}
+                        numberOfLines={2}
+                      >
+                        {selectedGym.name}
+                      </ThemedText>
+                      <View style={styles.sheetFooterMeta}>
+                        <View style={styles.sheetFooterLeft}>
                           <Image
-                            source={USER_CAR_ICON}
-                            style={styles.sheetCarIcon}
+                            source={USER_ICON_MAP_CARD}
+                            style={styles.sheetUserIcon}
                             contentFit="contain"
                           />
-                          <View style={styles.sheetDriveMetrics}>
-                            <ThemedText
-                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              style={styles.sheetDriveText}
-                              numberOfLines={1}
-                            >
-                              {driveEta.km.toFixed(1)}km
-                            </ThemedText>
-                            <ThemedText
-                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              style={styles.sheetDriveSep}
-                              accessibilityElementsHidden
-                              importantForAccessibility="no"
-                            >
-                              ·
-                            </ThemedText>
-                            <ThemedText
-                              lightColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              darkColor={APP_SHELL_MAIN_TEXT_COLOR}
-                              style={styles.sheetDriveText}
-                              numberOfLines={1}
-                            >
-                              {formatDriveDurationMinutes(driveEta.minutes)}
-                            </ThemedText>
-                          </View>
+                          <ThemedText
+                            lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                            darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                            style={styles.sheetChatterCount}
+                          >
+                            8
+                          </ThemedText>
                         </View>
-                      ) : null}
+                        {userLocationVisible && driveEta ? (
+                          <View style={styles.sheetDriveRow}>
+                            <Image
+                              source={USER_CAR_ICON}
+                              style={styles.sheetCarIcon}
+                              contentFit="contain"
+                            />
+                            <View style={styles.sheetDriveMetrics}>
+                              <ThemedText
+                                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                style={styles.sheetDriveText}
+                                numberOfLines={1}
+                              >
+                                {driveEta.km.toFixed(1)}km
+                              </ThemedText>
+                              <ThemedText
+                                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                style={styles.sheetDriveSep}
+                                accessibilityElementsHidden
+                                importantForAccessibility="no"
+                              >
+                                ·
+                              </ThemedText>
+                              <ThemedText
+                                lightColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                darkColor={APP_SHELL_MAIN_TEXT_COLOR}
+                                style={styles.sheetDriveText}
+                                numberOfLines={1}
+                              >
+                                {formatDriveDurationMinutes(driveEta.minutes)}
+                              </ThemedText>
+                            </View>
+                          </View>
+                        ) : null}
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-        ) : null}
+          ) : null}
+        </View>
       </View>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screenRoot: {
     flex: 1,
     ...TAB_SCREEN_ROOT_ABOVE_TAB_BAR,
+  },
+  mapChrome: {
+    ...TAB_SCREEN_STACK_CHROME_LAYOUT,
+    backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
   },
   mapStack: {
     flex: 1,

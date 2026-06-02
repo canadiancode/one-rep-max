@@ -8,6 +8,10 @@ import {
 } from "@/constants/app-colors";
 
 import {
+  TAB_HEADER_CONTENT_HEIGHT,
+  TAB_HEADER_ROW_LAYOUT,
+} from "@/constants/app-shell";
+import {
   ACTIONS_DAILY_PROGRESS_FILL_PERCENT,
   ACTIONS_DAILY_PROGRESS_LABEL_PERCENT,
 } from "@/features/actions/constants";
@@ -38,19 +42,13 @@ export function ActionsHeader() {
   );
 }
 
-/** Matches `settings-header` pixel image height so both blue bands align. */
-const HEADER_CONTENT_HEIGHT = 80;
-
 const styles = StyleSheet.create({
   headerRow: {
-    minHeight: 96,
-    paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 14,
+    ...TAB_HEADER_ROW_LAYOUT,
     backgroundColor: APP_SHELL_PRIMARY_BACKGROUND,
   },
   contentBlock: {
-    height: HEADER_CONTENT_HEIGHT,
+    height: TAB_HEADER_CONTENT_HEIGHT,
     justifyContent: "flex-end",
     gap: 4,
   },
