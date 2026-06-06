@@ -2,12 +2,12 @@ import { StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import {
-  APP_SHELL_LABEL_COLOR,
-  APP_SHELL_MAIN_TEXT_COLOR,
+    APP_SHELL_LABEL_COLOR,
+    APP_SHELL_MAIN_TEXT_COLOR,
 } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
-import { GymChatListRow } from "@/features/chat/components/gym-chat-list-row";
 import { ChatSubScreenLayout } from "@/features/chat/components/chat-sub-screen-layout";
+import { GymChatListRow } from "@/features/chat/components/gym-chat-list-row";
 import { FAKE_SAVED_GYM_CHATS } from "@/features/chat/gym-chats-fake-data";
 
 export default function GymChatsScreen() {
@@ -38,6 +38,7 @@ export default function GymChatsScreen() {
               gymId={item.id}
               name={item.name}
               memberCount={item.memberCount}
+              liveViewerCount={item.liveViewerCount}
               background_img={item.background_img}
               showBottomBorder={index < chats.length - 1}
             />

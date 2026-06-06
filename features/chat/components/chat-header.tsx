@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
-import { router } from "expo-router";
-import { useState } from "react";
+import { router, usePathname } from "expo-router";
+import { useMemo, useState } from "react";
 import { Platform, Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import {
@@ -28,9 +28,24 @@ const SINGLE_LINE_ANDROID = Platform.select({
   default: {},
 });
 
+function searchFieldCopy(pathname: string): { placeholder: string; a11yLabel: string } {
+  if (pathname.includes("/gym-chat/")) {
+    return { placeholder: "Search chat...", a11yLabel: "Search chat" };
+  }
+  if (pathname.includes("/gym-chats")) {
+    return { placeholder: "Search chats", a11yLabel: "Search chats" };
+  }
+  return { placeholder: "Search Pixels", a11yLabel: "Search Pixels" };
+}
+
 /** Primary header band; same dimensions as Settings / Actions / Map. */
 export function ChatHeader() {
   const [query, setQuery] = useState("");
+  const pathname = usePathname();
+  const { placeholder, a11yLabel } = useMemo(
+    () => searchFieldCopy(pathname),
+    [pathname],
+  );
 
   return (
     <View style={styles.headerRow}>
@@ -45,10 +60,10 @@ export function ChatHeader() {
               contentFit="fill"
             />
             <TextInput
-              accessibilityLabel="Search Pixels"
+              accessibilityLabel={a11yLabel}
               value={query}
               onChangeText={setQuery}
-              placeholder="Search Pixels"
+              placeholder={placeholder}
               placeholderTextColor={APP_SHELL_INPUT_PLACEHOLDER_COLOR}
               style={styles.input}
               autoCapitalize="none"

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     lineHeight: 28,
   },
   bar: {

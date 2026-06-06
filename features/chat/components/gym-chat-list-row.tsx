@@ -6,31 +6,32 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import {
   APP_SHELL_INPUT_BOARDER_COLOR,
-  APP_SHELL_LABEL_COLOR,
   APP_SHELL_MAIN_TEXT_COLOR,
 } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 import {
   DEFAULT_GYM_CHAT_IMAGE,
-  GYM_CHAT_USER_ICON,
 } from "@/features/chat/constants";
 
+import { GymChatPresenceRow } from "./gym-chat-presence-row";
+
 const GYM_THUMB_SIZE = 72;
-const USER_ICON_SIZE = 22;
 
 const GYM_NAME_FONT_SIZE = 12;
-const MEMBER_COUNT_FONT_SIZE = GYM_NAME_FONT_SIZE - 1;
 
 type Props = {
   gymId: string;
   name: string;
   memberCount: number;
+  liveViewerCount: number;
   background_img?: ImageSourcePropType;
   /** When false, omit bottom border (e.g. last row in a list). */
   showBottomBorder: boolean;
 };
 
-function gymThumbSource(background_img?: ImageSourcePropType): ImageSourcePropType {
+function gymThumbSource(
+  background_img?: ImageSourcePropType,
+): ImageSourcePropType {
   return background_img ?? DEFAULT_GYM_CHAT_IMAGE;
 }
 
@@ -39,16 +40,15 @@ export function GymChatListRow({
   gymId,
   name,
   memberCount,
+  liveViewerCount,
   background_img,
   showBottomBorder,
 }: Props) {
-  const memberLabel = String(memberCount);
-
   return (
     <View style={[styles.cell, showBottomBorder && styles.cellBorderBottom]}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${name}. ${memberCount} members chatting`}
+        accessibilityLabel={`${name}. ${memberCount} members chatting. ${liveViewerCount} live now`}
         onPress={() =>
           router.push({
             pathname: "/(tabs)/chat/gym-chat/[gymId]",
@@ -73,22 +73,10 @@ export function GymChatListRow({
             >
               {name}
             </ThemedText>
-            <View style={styles.memberRow}>
-              <Image
-                source={GYM_CHAT_USER_ICON}
-                style={styles.userIcon}
-                contentFit="contain"
-                accessibilityIgnoresInvertColors
-              />
-              <ThemedText
-                lightColor={APP_SHELL_LABEL_COLOR}
-                darkColor={APP_SHELL_LABEL_COLOR}
-                style={styles.memberCount}
-                numberOfLines={1}
-              >
-                {memberLabel}
-              </ThemedText>
-            </View>
+            <GymChatPresenceRow
+              memberCount={memberCount}
+              liveViewerCount={liveViewerCount}
+            />
           </View>
         </View>
       </Pressable>
@@ -136,20 +124,5 @@ const styles = StyleSheet.create({
     fontSize: GYM_NAME_FONT_SIZE,
     lineHeight: 18,
     fontWeight: "600",
-  },
-  memberRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  userIcon: {
-    width: USER_ICON_SIZE,
-    height: USER_ICON_SIZE,
-  },
-  memberCount: {
-    fontFamily: FONT_FAMILY,
-    fontSize: MEMBER_COUNT_FONT_SIZE,
-    lineHeight: 16,
-    fontWeight: "500",
   },
 });
