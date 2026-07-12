@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start --dev-client",
+    "start:ios": "expo start --dev-client --ios",
+    "prewarm:ios": "node ./scripts/prewarm-ios-bundle.js",
     "start:go": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
@@ -47,7 +49,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
-    "babel-preset-expo": "^55.0.17",
+    "babel-preset-expo": "~54.0.11",
     "dotenv": "^17.4.2",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

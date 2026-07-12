@@ -28,7 +28,10 @@ const SINGLE_LINE_ANDROID = Platform.select({
   default: {},
 });
 
-function searchFieldCopy(pathname: string): { placeholder: string; a11yLabel: string } {
+function searchFieldCopy(pathname: string): {
+  placeholder: string;
+  a11yLabel: string;
+} {
   if (pathname.includes("/gym-chat/")) {
     return { placeholder: "Search chat...", a11yLabel: "Search chat" };
   }

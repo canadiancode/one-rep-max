@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ImageSourcePropType } from "react-native";
-import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -18,6 +18,9 @@ import { FONT_FAMILY } from "@/constants/fonts";
 import { DEFAULT_GYM_CHAT_IMAGE } from "@/features/chat/constants";
 
 import { GymChatPresenceRow } from "./gym-chat-presence-row";
+
+const EMPTY_FAVOURITE = require("@/assets/icons/empty-favourite.png");
+const FILLED_FAVOURITE = require("@/assets/icons/favourite.png");
 
 const TITLE_FONT_EXPANDED = 15;
 const TITLE_FONT_COLLAPSED = 12;
@@ -46,6 +49,7 @@ export function GymChatHeaderCard({
   background_img,
   collapsed,
 }: Props) {
+  const [favourited, setFavourited] = useState(false);
   const { height: winH } = useWindowDimensions();
   const imageStripHeight = useMemo(
     () => Math.round(Math.min(Math.max(winH * 0.14, 84), 140)),
@@ -145,11 +149,31 @@ export function GymChatHeaderCard({
             >
               {name}
             </Animated.Text>
-            <View style={styles.presenceWrap}>
+            <View style={styles.presenceRowExpanded}>
               <GymChatPresenceRow
                 memberCount={memberCount}
                 liveViewerCount={liveViewerCount}
               />
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={
+                  favourited ? "Remove from favourites" : "Add to favourites"
+                }
+                accessibilityState={{ selected: favourited }}
+                hitSlop={8}
+                onPress={() => setFavourited((v) => !v)}
+                style={({ pressed }) => [
+                  styles.favouriteHit,
+                  pressed && styles.favouriteHitPressed,
+                ]}
+              >
+                <Image
+                  source={favourited ? FILLED_FAVOURITE : EMPTY_FAVOURITE}
+                  style={styles.favouriteIcon}
+                  contentFit="contain"
+                  accessibilityIgnoresInvertColors
+                />
+              </Pressable>
             </View>
           </>
         )}
@@ -185,8 +209,25 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: APP_SHELL_MAIN_TEXT_COLOR,
   },
-  presenceWrap: {
-    alignSelf: "flex-start",
+  presenceRowExpanded: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    gap: 12,
+    marginBottom: 8,
+  },
+  favouriteHit: {
+    flexShrink: 0,
+    padding: 2,
+  },
+  favouriteHitPressed: {
+    opacity: 0.75,
+  },
+  favouriteIcon: {
+    width: 26,
+    height: 26,
+    flexShrink: 0,
   },
   metaCollapsedRow: {
     flexDirection: "row",
