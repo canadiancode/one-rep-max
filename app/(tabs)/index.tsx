@@ -1,5 +1,6 @@
-import { Image } from "expo-image";
-import { StyleSheet, View } from "react-native";
+import { Image, type ImageSource } from "expo-image";
+import { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { FloatingShellSurface } from "@/components/floating-shell-surface";
 import { ThemedText } from "@/components/themed-text";
@@ -10,11 +11,18 @@ import {
   APP_SHELL_SECONDARY_BACKGROUND,
 } from "@/constants/app-colors";
 import { TAB_SCREEN_ROOT_ABOVE_TAB_BAR } from "@/constants/app-shell";
+import {
+  DEFAULT_PIXEL_LOADOUT,
+  PixelCharacter,
+  PixelDetailPanel,
+  type PixelLayerId,
+  type PixelLoadout,
+} from "@/features/pixel";
 import { useDashboardHealthMetrics } from "@/hooks/use-dashboard-health-metrics";
 import {
   CURRENT_XP,
-  getPixelLevel,
   getNextPixelLevel,
+  getPixelLevel,
   getXpBarFillPercent,
   getXpRemainingToNextLevel,
 } from "@/lib/xp-progress";
@@ -42,6 +50,13 @@ function formatGroupedInt(value: number, connected: boolean): string {
 
 export default function MyPixelScreen() {
   const { metrics, connectivity } = useDashboardHealthMetrics();
+  const [isPixelDetailOpen, setIsPixelDetailOpen] = useState(false);
+  const [pixelLoadout, setPixelLoadout] =
+    useState<PixelLoadout>(DEFAULT_PIXEL_LOADOUT);
+
+  const handleSelectPixelAsset = (layerId: PixelLayerId, source: ImageSource) => {
+    setPixelLoadout((current) => ({ ...current, [layerId]: source }));
+  };
 
   return (
     <ThemedView
@@ -50,15 +65,26 @@ export default function MyPixelScreen() {
       style={styles.container}
     >
       <View style={[styles.row, styles.rowFull, styles.rowDouble]}>
-        <View style={styles.heroShell}>
-          <Image
-            accessibilityIgnoresInvertColors
-            source={require("@/assets/backgrounds/beast-hero.png")}
-            style={styles.heroImage}
-            contentFit="cover"
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Open pixel details"
+          disabled={isPixelDetailOpen}
+          onPress={() => setIsPixelDetailOpen(true)}
+          style={styles.heroShell}
+        >
+          <PixelCharacter loadout={pixelLoadout} style={styles.heroCharacter} />
+        </Pressable>
+      </View>
+      {isPixelDetailOpen ? (
+        <View style={styles.lowerSection}>
+          <PixelDetailPanel
+            loadout={pixelLoadout}
+            onSelectAsset={handleSelectPixelAsset}
+            onBack={() => setIsPixelDetailOpen(false)}
           />
         </View>
-      </View>
+      ) : (
+        <View style={styles.lowerSection}>
       <View style={styles.row}>
         <View style={styles.metricTileWrapper}>
           <FloatingShellSurface
@@ -392,7 +418,10 @@ export default function MyPixelScreen() {
                 {CURRENT_XP.toLocaleString("en-US")}XP
               </ThemedText>
             </View>
-            <XpLevelBar fillPercent={XP_BAR_FILL_PERCENT} style={styles.xpBarRow} />
+            <XpLevelBar
+              fillPercent={XP_BAR_FILL_PERCENT}
+              style={styles.xpBarRow}
+            />
             <View style={styles.xpFooterRow}>
               <ThemedText
                 lightColor={APP_SHELL_MAIN_TEXT_COLOR}
@@ -405,6 +434,8 @@ export default function MyPixelScreen() {
           </View>
         </View>
       </View>
+        </View>
+      )}
     </ThemedView>
   );
 }
@@ -426,6 +457,14 @@ const styles = StyleSheet.create({
   rowDouble: {
     flex: 2,
   },
+  /**
+   * Holds metrics (4× flex:1 rows) or the detail panel.
+   * flex: 4 keeps the pixel hero at a stable 2:4 split either way.
+   */
+  lowerSection: {
+    flex: 4,
+    minHeight: 0,
+  },
   cellFull: {
     flex: 1,
     minWidth: 0,
@@ -438,7 +477,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     backgroundColor: APP_SHELL_SECONDARY_BACKGROUND,
   },
-  heroImage: {
+  heroCharacter: {
     flex: 1,
     width: "100%",
     minHeight: 0,
