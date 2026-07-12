@@ -62,6 +62,11 @@ const tabItemLast: ViewStyle = {
   marginEnd: TAB_LIST_HORIZONTAL_PAD,
 };
 
+/** Default landing tab is My Pixel (`pixel`), not a missing `index` screen. */
+export const unstable_settings = {
+  initialRouteName: "pixel",
+};
+
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const horizontalInset = Math.max(insets.left, insets.right);
@@ -108,6 +113,12 @@ export default function TabLayout() {
     >
       <Tabs.Screen
         name="index"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="pixel"
         options={{
           title: "My Pixel",
           tabBarItemStyle: tabItemFirst,

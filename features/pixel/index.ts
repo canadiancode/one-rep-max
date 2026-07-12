@@ -1,19 +1,32 @@
 export { PixelCharacter, PIXEL_CANVAS_ASPECT_RATIO } from "./components/pixel-character";
-export { PixelDetailPanel } from "./components/pixel-detail-panel";
+export { PixelDashboardMetrics } from "./components/pixel-dashboard-metrics";
+export { PixelSubScreenToolbar } from "./components/pixel-sub-screen-toolbar";
 export {
   PIXEL_LAYER_CATEGORIES,
   getPixelLayerCategoryLabel,
+  isPixelLayerId,
   type PixelLayerCategory,
 } from "./data";
 export { DEFAULT_PIXEL_LOADOUT } from "./default-loadout";
 export { useRandomPixelLoadout } from "./hooks/use-random-pixel-loadout";
 export {
+  DEFAULT_PIXEL_INVENTORY,
+  PIXEL_ITEM_BY_ID,
   PIXEL_LAYER_ASSETS,
   createRandomPixelLoadout,
-  type PixelLayerOption,
+  getOwnedItemsForLayer,
+  getPixelItem,
+  getPixelItemSource,
+  getPixelItemsForLayer,
 } from "./layer-assets";
 export {
+  PixelLoadoutProvider,
+  usePixelLoadout,
+} from "./pixel-loadout-context";
+export {
   PIXEL_LAYER_Z_INDEX,
+  type PixelItem,
+  type PixelItemId,
   type PixelLayerId,
   type PixelLayerSpec,
   type PixelLoadout,

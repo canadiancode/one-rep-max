@@ -25,3 +25,7 @@ export function getPixelLayerCategoryLabel(layerId: PixelLayerId): string {
     layerId
   );
 }
+
+export function isPixelLayerId(value: string): value is PixelLayerId {
+  return PIXEL_LAYER_CATEGORIES.some((category) => category.id === value);
+}

@@ -1,4 +1,4 @@
-import { Image, type ImageSource } from "expo-image";
+import { Image } from "expo-image";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
@@ -8,16 +8,18 @@ import {
 } from "@/constants/app-colors";
 import { FONT_FAMILY } from "@/constants/fonts";
 
-import { PIXEL_LAYER_ASSETS } from "../layer-assets";
-import type { PixelLayerId } from "../types";
+import { getOwnedItemsForLayer } from "../layer-assets";
+import type { PixelItemId, PixelLayerId } from "../types";
 
 const THUMB_SIZE = 72;
 const LABEL_FONT_SIZE = 12;
 
 type Props = {
   layerId: PixelLayerId;
-  selectedSource: ImageSource | undefined;
-  onSelectAsset: (source: ImageSource) => void;
+  /** Owned item ids — picker only lists inventory for this layer. */
+  inventory: readonly PixelItemId[];
+  selectedItemId: PixelItemId | undefined;
+  onSelectItem: (itemId: PixelItemId) => void;
 };
 
 /**
@@ -26,10 +28,11 @@ type Props = {
  */
 export function PixelLayerAssetPicker({
   layerId,
-  selectedSource,
-  onSelectAsset,
+  inventory,
+  selectedItemId,
+  onSelectItem,
 }: Props) {
-  const options = PIXEL_LAYER_ASSETS[layerId];
+  const options = getOwnedItemsForLayer(layerId, inventory);
 
   return (
     <ScrollView
@@ -39,19 +42,19 @@ export function PixelLayerAssetPicker({
     >
       <View style={styles.list} accessibilityRole="list">
         {options.map((option, index) => {
-          const isSelected = option.source === selectedSource;
+          const isSelected = option.id === selectedItemId;
           const showBottomBorder = index < options.length - 1;
 
           return (
             <View
-              key={`${layerId}-${index}`}
+              key={option.id}
               style={[styles.cell, showBottomBorder && styles.cellBorderBottom]}
             >
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`${option.label}${isSelected ? ", selected" : ""}`}
                 accessibilityState={{ selected: isSelected }}
-                onPress={() => onSelectAsset(option.source)}
+                onPress={() => onSelectItem(option.id)}
                 style={({ pressed }) => [
                   styles.hit,
                   pressed && styles.hitPressed,

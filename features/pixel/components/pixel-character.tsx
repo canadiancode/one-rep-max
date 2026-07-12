@@ -2,6 +2,7 @@ import { Image } from "expo-image";
 import { StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
 import { DEFAULT_PIXEL_LOADOUT } from "../default-loadout";
+import { getPixelItemSource } from "../layer-assets";
 import {
   PIXEL_LAYER_Z_INDEX,
   type PixelLayerId,
@@ -19,7 +20,9 @@ const LAYER_ORDER = (
 function resolveLayers(loadout: PixelLoadout): PixelLayerSpec[] {
   const layers: PixelLayerSpec[] = [];
   for (const id of LAYER_ORDER) {
-    const source = loadout[id];
+    const itemId = loadout[id];
+    if (itemId == null) continue;
+    const source = getPixelItemSource(itemId);
     if (source == null) continue;
     layers.push({ id, zIndex: PIXEL_LAYER_Z_INDEX[id], source });
   }
@@ -35,6 +38,7 @@ type PixelCharacterProps = {
 
 /**
  * Stacks same-size pixel layers with CSS-like z-index so any combination lines up.
+ * `loadout` stores catalog item ids; images are resolved from the local registry.
  */
 export function PixelCharacter({
   loadout = DEFAULT_PIXEL_LOADOUT,
