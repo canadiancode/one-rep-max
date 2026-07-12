@@ -329,7 +329,7 @@ export const PIXEL_LAYER_ASSETS: Record<PixelLayerId, PixelLayerOption[]> = {
     },
     {
       label: "Green Bag Alt",
-      source: require("@/assets/pixel/item_right/item-right-green-bag (1).png"),
+      source: require("@/assets/pixel/item_right/item-right-green-militay-bag.png"),
     },
     {
       label: "Green Bag",
