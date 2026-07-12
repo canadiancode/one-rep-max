@@ -24,6 +24,11 @@ export {
   usePixelLoadout,
 } from "./pixel-loadout-context";
 export {
+  loadPixelPersistedState,
+  savePixelPersistedState,
+  type PixelPersistedState,
+} from "./pixel-persistence";
+export {
   PIXEL_LAYER_Z_INDEX,
   type PixelItem,
   type PixelItemId,
